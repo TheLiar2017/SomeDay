@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#dee0ff",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#bac3ff",
+                    "secondary-fixed": "#e0e0ff",
+                    "error-container": "#ffdad6",
+                    "on-background": "#191c1e",
+                    "primary-container": "#3f51b5",
+                    "on-secondary-container": "#27308a",
+                    "secondary-container": "#959efd",
+                    "primary": "#24389c",
+                    "on-secondary-fixed": "#000767",
+                    "tertiary-container": "#8f4700",
+                    "inverse-primary": "#bac3ff",
+                    "secondary-fixed-dim": "#bdc2ff",
+                    "surface-container-high": "#e6e8eb",
+                    "secondary": "#4c56af",
+                    "on-tertiary-fixed-variant": "#713700",
+                    "on-primary-container": "#cacfff",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e0e3e6",
+                    "surface-bright": "#f7f9fc",
+                    "background": "#f7f9fc",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#ffc7a2",
+                    "error": "#ba1a1a",
+                    "surface-container": "#eceef1",
+                    "outline-variant": "#c5c5d4",
+                    "on-primary-fixed": "#00105c",
+                    "on-surface": "#191c1e",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-surface-variant": "#454652",
+                    "tertiary": "#6c3400",
+                    "surface-container-highest": "#e0e3e6",
+                    "on-secondary-fixed-variant": "#343d96",
+                    "surface-dim": "#d8dadd",
+                    "surface": "#f7f9fc",
+                    "surface-container-low": "#f2f4f7",
+                    "on-tertiary-fixed": "#301400",
+                    "on-primary-fixed-variant": "#293ca0",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#757684",
+                    "surface-tint": "#4355b9",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb784",
+                    "inverse-on-surface": "#eff1f4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .cloud-shadow {
+            box-shadow: 0 12px 40px rgba(25, 28, 30, 0.06);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #24389c 0%, #3f51b5 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Sidebar Navigation -->
+<aside class="h-full w-64 fixed left-0 top-0 bg-slate-100 dark:bg-slate-900 flex flex-col py-8 z-50">
+<div class="px-6 mb-12">
+<h1 class="text-xl font-bold font-manrope text-indigo-900 dark:text-white">策展人</h1>
+<p class="text-xs text-on-surface-variant font-medium mt-1">编辑任务大师</p>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors rounded-xl group active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-sm font-medium">仪表盘</span>
+</a>
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors rounded-xl group active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-manrope text-sm font-medium">日历</span>
+</a>
+<!-- Active Tab: Projects -->
+<a class="flex items-center gap-3 text-indigo-700 dark:text-indigo-400 font-semibold border-l-4 border-indigo-600 pl-4 py-2 group active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">folder</span>
+<span class="font-manrope text-sm font-medium">项目</span>
+</a>
+</nav>
+<div class="px-6 mt-auto space-y-2 border-t border-outline-variant/15 pt-8">
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-manrope text-sm font-medium">设置</span>
+</a>
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors rounded-xl" href="#">
+<span class="material-symbols-outlined">archive</span>
+<span class="font-manrope text-sm font-medium">归档</span>
+</a>
+<div class="mt-8 p-4 bg-surface-container-high rounded-xl">
+<div class="flex items-center gap-3 mb-3">
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="Close up portrait of a professional woman with a minimalist urban background, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBklysYdxes5nRtVlN3xrcH68xtjnaVg-EeY72XmW1BwTP2ftXGoqJfEJlbg1sIOrWckStZWWQtSoDTPcHh5135990Uxk_I3XFN-wp1iJrByJsQqU5mS9Al1k-nUCSJ28LusGz6nXBij0T-HGLA9W2ePhF4ARaG_q6PiAKF1iEM6NsjWyAS7URNjuH4QDHUElBGTE5oj_f3SBu6m614Yb_vd5bAFijdNxgoDTLuuBnRa7IAJfEJPb3Sq98eIp-ZT3hr_WUP6EQmi2Fs"/>
+<div class="overflow-hidden">
+<p class="text-xs font-bold text-on-surface truncate">Alex Rivera</p>
+<p class="text-[10px] text-on-surface-variant truncate">高级策展人</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top AppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl flex justify-between items-center px-8 z-40">
+<div class="flex items-center gap-4 bg-surface-container-low px-4 py-2 rounded-full w-96 group focus-within:bg-surface-container-lowest transition-all">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-body w-full" placeholder="搜索项目..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<button class="hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full p-2 transition-all duration-300 relative">
+<span class="material-symbols-outlined text-outline">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<button class="hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full p-2 transition-all duration-300">
+<span class="material-symbols-outlined text-outline">help</span>
+</button>
+<div class="h-8 w-px bg-outline-variant/30 mx-2"></div>
+<button class="flex items-center gap-2 group">
+<span class="text-sm font-semibold text-on-surface font-manrope">任务大师</span>
+<span class="material-symbols-outlined text-outline group-hover:translate-y-0.5 transition-transform">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-12 pb-12 min-h-screen">
+<!-- Editorial Header -->
+<header class="mb-16 flex justify-between items-end">
+<div>
+<h2 class="text-5xl font-extrabold font-manrope tracking-tight text-on-background mb-4">活跃项目</h2>
+<p class="text-on-surface-variant font-body max-w-md">精准编排您的编辑工作流程。管理当前关注领域的的时间线、协作人员和里程碑。</p>
+</div>
+<button class="bg-gradient-primary text-white font-manrope font-bold py-4 px-8 rounded-full cloud-shadow hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+            新建项目
+        </button>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Project Card 1 (Large Focus) -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 cloud-shadow group hover:bg-surface-container-low transition-all">
+<div class="flex justify-between items-start mb-12">
+<div class="flex gap-4 items-center">
+<div class="w-14 h-14 bg-primary-fixed rounded-xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">auto_stories</span>
+</div>
+<div>
+<span class="text-[10px] uppercase tracking-widest font-bold text-primary mb-1 block">进行中</span>
+<h3 class="text-2xl font-bold font-manrope">秋季编辑型录</h3>
+</div>
+</div>
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="mb-12">
+<div class="flex justify-between items-end mb-4">
+<p class="text-sm font-semibold font-manrope">整体速度</p>
+<p class="text-sm font-bold text-primary">74%</p>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-gradient-primary rounded-full" style="width: 74%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center -space-x-3">
+<img alt="Collaborator" class="w-10 h-10 rounded-full border-4 border-surface-container-lowest object-cover" data-alt="Portrait of a creative professional woman in a bright studio environment, natural lighting, high fashion style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA87-b-vrXrZExUna4tUrpUu8vhEEKMNqxI4HcE1iCdK6lR4anz4VpQiM4j8pvGiE71hRu7VqqhqR2UZVJC3akfOOHJ7HJ3wOc-B9ha0Tqub6ntzPqGgGqQIESKkqgLcX12TY-Mqd77IwnotRfCte2N7-R-1ov9wRFl4Swgqbh4A08bj2GzOM7wLlLauILp7ABlvSfzcPagtaIeU__uaIuz08IgalFq4bk66qtPBtqnVByG9-jNba9E_QEXbG_KutJAOzzMPiie9OuN"/>
+<img alt="Collaborator" class="w-10 h-10 rounded-full border-4 border-surface-container-lowest object-cover" data-alt="Portrait of a young male designer in a minimalist office, soft window light, professional and clean" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFdMVAKh0t-lauG3GExAXLRAxvwMWQrOKTTwTGutApcQkCqclWYWbgW59-S_b3a5n3B1ToEdLZyxQq_k2yRbC4vKGcrs4sS60-0bXN5tgbFVzvi6ZSvjSqeLklEJmkOB_alTaellErdTur1PEmhNrDe1s1FNVOYx3Z0ZpXdWbRbyCcpiarNmx5LUsSHgliHluNqv8T-2kQV108gLUJR01cU-KxHSfapT2_KReMgmhKSpmLvcTqiYdWgKYYErhGJCy8mfN-3tHnBier"/>
+<img alt="Collaborator" class="w-10 h-10 rounded-full border-4 border-surface-container-lowest object-cover" data-alt="Portrait of a confident senior editor in a library setting, warm incandescent lighting, sophisticated mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk2RsCbMcDwS2ZDKDlU9YyBfPpfiQ8e1gb02v3Q26pQ6fqAyY17325UQiPgNKiB00hKoqu8prmkTPLfRe7ZKIUb87fsLZVz_WM6sSTziBWG_vc5zsVwSDqKRf2vX4pXDC3sKoi_YLr2AyA4VD2x3y_qjcwj9jT6nfFCdw56z5rKPzcS4R6iXEZw0VqKDsHHSgit5Z0Fyvt_VkWb8p-PZ2UkwSGTDEIDUKKlNxXheHYsrxwhaGNqNZDYoT_HT1wHK-F5HZAR53TTzXD"/>
+<div class="w-10 h-10 rounded-full border-4 border-surface-container-lowest bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-on-surface-variant">
+                        +4
+                    </div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="text-[10px] uppercase font-bold text-outline-variant">待办任务</p>
+<p class="text-lg font-bold">12</p>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<div class="text-right">
+<p class="text-[10px] uppercase font-bold text-outline-variant">截止日期</p>
+<p class="text-lg font-bold">10月24日</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-8 cloud-shadow hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 bg-secondary-fixed rounded-xl flex items-center justify-center text-on-secondary-fixed-variant mb-6">
+<span class="material-symbols-outlined text-2xl">campaign</span>
+</div>
+<h3 class="text-xl font-bold font-manrope mb-2">第四季度社交策略</h3>
+<p class="text-sm text-on-surface-variant mb-8 line-clamp-2">重构即将到来的假日季度的跨平台互动方案。</p>
+<div class="mb-8">
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 32%"></div>
+</div>
+<p class="text-[10px] font-bold text-on-surface-variant mt-2">已完成 32%</p>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center -space-x-2">
+<img alt="Collaborator" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" data-alt="Close up portrait of a stylish creative director, neutral studio background, daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHPZZAZPEgdO1ZQCW6_Xwlbedppz70X7rUEVoKp3SZLMd8UR0LCkfICMn5iUBFYUMHIsmsiuqANufNrZKXVk1FIxuD49Ns9E0HnaAAsR14Zh05YmPsZPZD7Zdgx_RXnueaozRLlRTH-vF6NQ2kR0Rd7jKILJZim9iTvopBWd1-VytjPHZjT026emBLxrJTtHZLpeDK9ErMYPXbd7aptTEB9eJQu9omLnFUPV9KQaxd-HYS2PmHIwKOKkOxNMAZ_0IABZ1TUJj9AlZm"/>
+<img alt="Collaborator" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" data-alt="Portrait of a young woman laughing, casual urban setting, warm sunset glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk-jdXlHljZHSsQUNczVItDLcEZUhJ9IsOg_nbRWvpeK1y2xwzWrNq5qTJrDrDmWcE_YTd1DeQBe13nSfHgV-F6lkbOI16T6oon2tFgQrIsH_uBhQxiib9VwiVjyuRcP3G4qlbFS6wjSXtJfBWl7VfvZR0SdsBh-jlsFqqYQNI6A2FOEwuj5HzX-k4YSlFJpOZqFYFCaptle7diVc3bjLEVGUPL5iTJy_qxJVxl7_mRMju0xSUZGE3IsR4dWzgmWweQ2Se4M2IraVE"/>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">剩余 5 个任务</span>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-8 cloud-shadow hover:bg-surface-container-low transition-all">
+<div class="w-12 h-12 bg-tertiary-fixed rounded-xl flex items-center justify-center text-tertiary mb-6">
+<span class="material-symbols-outlined text-2xl">architecture</span>
+</div>
+<h3 class="text-xl font-bold font-manrope mb-2">品牌指南 v2</h3>
+<p class="text-sm text-on-surface-variant mb-8 line-clamp-2">在所有数字触点中标准化视觉识别系统。</p>
+<div class="mb-8">
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full" style="width: 90%"></div>
+</div>
+<p class="text-[10px] font-bold text-on-surface-variant mt-2">已完成 90%</p>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center -space-x-2">
+<img alt="Collaborator" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" data-alt="Portrait of a serious man with beard in a modern office, cool morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC5juIdDAMGCNdudgjUpsiHG_xk2UVUkHnAuZYtQDDNo97KJVVPKTkCOW1v0lPQKcAClqwjdbcDy2lz3dIXW1v-F5R4lAAZli1adHzuU75G7tPgw4_m2mh6zYQymeIi6IO0Cs-N643PoTdnzkQhEuVB_i2tsu2ZhBHJbaIe5Iwjy9HA93ua3MLoZuHoYHYPBVSzYE1SHvQABfXm_FCO8j_bB7Vl2dTvliN-0t2LiSK9mZBnfvyxYTlRjoEePSO9bMzYLqebNej1Zkl"/>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">剩余 1 个任务</span>
+</div>
+</div>
+<!-- Empty State / New Slot -->
+<div class="border-2 border-dashed border-outline-variant/40 rounded-xl p-8 flex flex-col items-center justify-center group hover:border-primary/40 transition-colors cursor-pointer bg-surface/30">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-primary-fixed transition-colors mb-4">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-3xl">add</span>
+</div>
+<p class="font-manrope font-bold text-on-surface-variant group-hover:text-primary transition-colors">启动新项目</p>
+<p class="text-xs text-outline mt-1">初始化编辑工作流</p>
+</div>
+<!-- Project Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-8 cloud-shadow hover:bg-surface-container-low transition-all lg:col-span-1">
+<div class="w-12 h-12 bg-surface-container-high rounded-xl flex items-center justify-center text-on-surface-variant mb-6">
+<span class="material-symbols-outlined text-2xl">podcasts</span>
+</div>
+<h3 class="text-xl font-bold font-manrope mb-2">内部播客</h3>
+<p class="text-sm text-on-surface-variant mb-8 line-clamp-2">讨论行业趋势和内部里程碑的每周系列节目。</p>
+<div class="mb-8">
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-outline rounded-full" style="width: 15%"></div>
+</div>
+<p class="text-[10px] font-bold text-on-surface-variant mt-2">已完成 15%</p>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center -space-x-2">
+<img alt="Collaborator" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" data-alt="Artistic portrait of a thoughtful woman with natural soft lighting, warm atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq-HaGkp88XoMRgnjhfNXBHvEg-vvxJSJEk7sHlgH-jXc02v5CZeV9rYpoqBOwntYnOxcBG2VHoTZzaTd9zht4VwCuG-O86JSUN03IJR-GjO60rzTDIRgJrYbjG4KBXRw6mpBKk_BuJxycVXd3n2Chj_qnVgM7SKI0TXfg_7AcLoviDHpWkTTbh1d9j2zdgHHUMdb9KXFvoEQnSitDS3cobd7Ld0xbfhRAeLH0eLQcwWBcGbkaC7tRZzZZ9NmnerDTBxwDhqy59nx3"/>
+<img alt="Collaborator" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest object-cover" data-alt="Portrait of a male executive looking out of window, cinematic side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5MW4GcVihS53q9IxDscw4SBfPV8tW_qidpD_Yg4HdoxuYOxsBZE1d-PBqooH3DClYmiCRjXo9wJp-PCUF_uiIwR6tyX0tPoh733KsZA8wdtdk1t73_DdACTdpXIAChV9sMNGO15WLCgWWLw6QW_Mjtac_ULbWjUkwxmbZZBhWIslaeey5SuNe_n0AChXJV3Iw6EQx5lpoicdRT6j2PSt9wDsPiboqLOHqRWyxb9ppjih4QB7aLf6D4M5lWqzCU1CUcL9rd2egAtwa"/>
+</div>
+<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">剩余 18 个任务</span>
+</div>
+</div>
+</div>
+<!-- Secondary Layout: Upcoming Deadlines Asymmetric Section -->
+<section class="mt-20">
+<h4 class="text-2xl font-extrabold font-manrope tracking-tight mb-8">优先截止日期</h4>
+<div class="grid grid-cols-12 gap-6">
+<div class="col-span-12 md:col-span-8 space-y-3">
+<!-- Task Item 1 -->
+<div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<div>
+<p class="font-semibold text-on-surface">确定印刷规格</p>
+<p class="text-xs text-on-surface-variant">秋季编辑型录 • 技术审查</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<span class="text-xs font-bold text-error bg-error-container px-3 py-1 rounded-full">紧急</span>
+<span class="text-sm font-manrope text-outline">今天, 5:00 PM</span>
+</div>
+</div>
+<!-- Task Item 2 -->
+<div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<div>
+<p class="font-semibold text-on-surface">利益相关者访谈：CEO</p>
+<p class="text-xs text-on-surface-variant">第四季度社交策略 • 内容规划</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<span class="text-xs font-bold text-primary bg-primary-fixed px-3 py-1 rounded-full">战略</span>
+<span class="text-sm font-manrope text-outline">明天, 10:00 AM</span>
+</div>
+</div>
+<!-- Task Item 3 -->
+<div class="flex items-center justify-between p-6 bg-surface-container-lowest rounded-xl hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-outline-variant" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+<div>
+<p class="font-semibold text-on-surface">素材导出 (SVG)</p>
+<p class="text-xs text-on-surface-variant">品牌指南 v2 • 设计运维</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<span class="text-xs font-bold text-tertiary bg-tertiary-fixed px-3 py-1 rounded-full">常规</span>
+<span class="text-sm font-manrope text-outline">2 天后</span>
+</div>
+</div>
+</div>
+<!-- Contextual Mini-Stats Card -->
+<div class="col-span-12 md:col-span-4 bg-primary text-white p-8 rounded-xl relative overflow-hidden cloud-shadow self-start">
+<div class="relative z-10">
+<p class="text-sm font-manrope text-on-primary-container mb-1 uppercase tracking-widest font-bold">本周情况</p>
+<h5 class="text-3xl font-extrabold font-manrope mb-8">进展顺利</h5>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-xs font-bold">总效率</span>
+<span class="text-xs font-bold">88%</span>
+</div>
+<div class="h-1.5 w-full bg-white/20 rounded-full">
+<div class="h-full bg-white rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/10 p-4 rounded-xl">
+<p class="text-[10px] text-on-primary-container font-bold uppercase">已完成</p>
+<p class="text-2xl font-extrabold">34</p>
+</div>
+<div class="bg-white/10 p-4 rounded-xl">
+<p class="text-[10px] text-on-primary-container font-bold uppercase">待处理</p>
+<p class="text-2xl font-extrabold">08</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative Background Element -->
+<div class="absolute -bottom-12 -right-12 w-48 h-48 bg-primary-container rounded-full blur-3xl opacity-50"></div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

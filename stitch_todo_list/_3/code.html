@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>新建项目 - Taskmaster</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f2f4f7",
+                    "on-secondary-container": "#27308a",
+                    "on-tertiary-fixed": "#301400",
+                    "secondary": "#4c56af",
+                    "surface-dim": "#d8dadd",
+                    "secondary-container": "#959efd",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-high": "#e6e8eb",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb784",
+                    "surface": "#f7f9fc",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#e0e3e6",
+                    "surface-bright": "#f7f9fc",
+                    "on-surface": "#191c1e",
+                    "tertiary-container": "#8f4700",
+                    "on-tertiary-container": "#ffc7a2",
+                    "inverse-primary": "#bac3ff",
+                    "secondary-fixed-dim": "#bdc2ff",
+                    "on-surface-variant": "#454652",
+                    "on-secondary-fixed-variant": "#343d96",
+                    "on-primary-fixed": "#00105c",
+                    "surface-container": "#eceef1",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed-variant": "#293ca0",
+                    "background": "#f7f9fc",
+                    "primary-fixed-dim": "#bac3ff",
+                    "on-tertiary-fixed-variant": "#713700",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#4355b9",
+                    "secondary-fixed": "#e0e0ff",
+                    "on-primary-container": "#cacfff",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#eff1f4",
+                    "primary-container": "#3f51b5",
+                    "on-background": "#191c1e",
+                    "on-secondary-fixed": "#000767",
+                    "tertiary": "#6c3400",
+                    "primary-fixed": "#dee0ff",
+                    "surface-variant": "#e0e3e6",
+                    "primary": "#24389c",
+                    "outline": "#757684",
+                    "outline-variant": "#c5c5d4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #24389c 0%, #3f51b5 100%);
+        }
+        .cloud-shadow {
+            box-shadow: 0 12px 40px rgba(25, 28, 30, 0.06);
+        }
+        .cloud-shadow-hover:hover {
+            box-shadow: 0 12px 40px rgba(25, 28, 30, 0.12);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col py-8 justify-between bg-slate-200 dark:bg-slate-800 font-['Manrope'] antialiased tracking-tight z-50">
+<div>
+<div class="text-2xl font-bold text-indigo-900 dark:text-white mb-8 px-6">Taskmaster</div>
+<nav class="flex flex-col gap-1">
+<!-- Dashboard: Inactive -->
+<a class="flex items-center gap-3 px-6 py-3 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-300/50 dark:hover:bg-slate-700/50 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium text-sm">仪表板</span>
+</a>
+<!-- Calendar: Inactive -->
+<a class="flex items-center gap-3 px-6 py-3 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-300/50 dark:hover:bg-slate-700/50 transition-all" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-medium text-sm">日历</span>
+</a>
+<!-- Projects: Active -->
+<a class="flex items-center gap-3 px-6 py-3 text-indigo-700 dark:text-indigo-400 font-semibold border-l-4 border-indigo-700 dark:border-indigo-400 bg-white/50 dark:bg-slate-700/50 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span class="font-medium text-sm">项目</span>
+</a>
+<!-- Stats: Inactive -->
+<a class="flex items-center gap-3 px-6 py-3 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-300/50 dark:hover:bg-slate-700/50 transition-all" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-medium text-sm">统计</span>
+</a>
+<!-- Archive: Inactive -->
+<a class="flex items-center gap-3 px-6 py-3 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-300/50 dark:hover:bg-slate-700/50 transition-all" href="#">
+<span class="material-symbols-outlined">archive</span>
+<span class="font-medium text-sm">归档</span>
+</a>
+<!-- Settings: Inactive -->
+<a class="flex items-center gap-3 px-6 py-3 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-300/50 dark:hover:bg-slate-700/50 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium text-sm">设置</span>
+</a>
+</nav>
+</div>
+<div class="px-6 flex flex-col gap-4">
+<div class="flex items-center gap-3 py-2">
+<img alt="用户头像" class="w-10 h-10 rounded-full object-cover border-2 border-white/20" data-alt="professional headshot of a creative director in a minimalist studio setting with soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0UXQGfYAn7E9ipvfqBEDU_ZWyM_U36NCftSJp4Qvj2qcBG7Yv1PC_41HDOK7a-Bea79Xg9dYpf6qVm4VVQxLNseC-d9Q9jGhNm1RVAwE9PcqFam36v297wA49duBEK2n1w7sTqCZLHREoK07MUcDRWH9Y9U8Sy-zNfZb0F6Me1XApTDftDD-grzVjfOgnVqyz8O_li8Ro0B2BI4h17nX1NEwivb1esMD9Zu1UR4ovZ0f3AITFpHVvXjnwf49c-64R88A_oxUVHhCd"/>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-indigo-900 dark:text-white">数字策划者</span>
+<span class="text-[10px] text-slate-500">Premium Plan</span>
+</div>
+</div>
+<nav class="flex flex-col gap-1 border-t border-slate-300/50 pt-4">
+<a class="flex items-center gap-3 py-2 text-slate-600 hover:text-indigo-600 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">person</span>
+<span class="text-sm">个人资料</span>
+</a>
+<a class="flex items-center gap-3 py-2 text-slate-600 hover:text-indigo-600 transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">logout</span>
+<span class="text-sm">退出登录</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 p-12 max-w-6xl mx-auto">
+<!-- Header -->
+<header class="mb-12">
+<h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">新建项目</h1>
+<p class="text-on-surface-variant text-lg">开始策划您的下一个数字化篇章。</p>
+</header>
+<!-- Creation Form -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Left Column: Primary Info -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Basic Info Card -->
+<div class="bg-surface-container-lowest rounded-xl p-8 cloud-shadow">
+<div class="space-y-6">
+<div>
+<label class="block text-sm font-semibold text-on-surface-variant mb-2">项目名称</label>
+<input class="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all outline-none" placeholder="例如：2024 夏季营销方案" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-on-surface-variant mb-2">项目描述</label>
+<textarea class="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all outline-none resize-none" placeholder="在此输入项目的目标、背景及关键交付成果..." rows="4"></textarea>
+</div>
+</div>
+</div>
+<!-- Members Card -->
+<div class="bg-surface-container-lowest rounded-xl p-8 cloud-shadow">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">group</span>
+                        团队协作
+                    </h3>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-semibold text-on-surface-variant mb-2">邀请成员</label>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-highest border-none rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all outline-none" placeholder="输入邮箱地址..." type="email"/>
+<button class="bg-surface-container-high px-6 py-3 rounded-full text-primary font-semibold text-sm hover:bg-surface-container-highest transition-colors">添加</button>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 pt-2">
+<div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/15">
+<img alt="Avatar" class="w-6 h-6 rounded-full" data-alt="portrait of a professional woman with a friendly smile, soft natural lighting, high-end photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNbsmJ3FR2DeeEN1IUltruKzL7nj8OEjPa-uEK0RdZoTUvB3QYtD6TEvVvJYJ9pGq5KxzwybnHEXvKivrmUjpG3-Uvcmj7YyiDIUslqdyjgs4_K00pLVwToRcDD11SzXM10InSidZ2YD2uQLhd-eVJoU7-ur2QwjNejOjnXAh_5p6l78rgby5orGPwQuECizRa02vdNavNKmvbt5H1QPmB4pQQarE42yAjwdZy8R-1Jc8g9zNxDX2017jzSJ0h2yjXLZFWLofLs7o7"/>
+<span class="text-xs font-medium">我 (所有者)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Settings & Meta -->
+<div class="lg:col-span-5 space-y-8">
+<!-- Cover Section -->
+<div class="bg-surface-container-lowest rounded-xl p-8 cloud-shadow">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">image</span>
+                        设置封面
+                    </h3>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl bg-surface-container-highest aspect-[16/9] flex items-center justify-center border-2 border-dashed border-outline-variant/30 hover:border-primary/50 transition-all">
+<img alt="Cover Preview" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity" data-alt="minimalist abstract background with soft deep blue and violet gradients, smooth texture, professional aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Mpb8O0vVO6Yob5tOSwFc01FlHa5otQZgeP4mcNPq4B1wxeX4CB_UjZJLWQ5jvA12XK3MgjBGVFh_nwRUwrYVB5ZUuM-wRVSzAcNYjR27ol8XXdfSKdTWkji16AVSLc2OAymA7tUpqf4pa3KoW1aNwtN5INrTAOzx7A0DmQknKKrPjs4h8dB8sOkB3gYLFfqNv18Y-gEPS1AdH0D3jGlMSyDgcvwcbazLFy7HeEhlxzH_Co3zroiRayoYurcdZslb3S2xiINrQhdv"/>
+<div class="relative z-10 flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant">cloud_upload</span>
+<span class="text-sm font-semibold text-on-surface-variant">点击或拖拽上传封面</span>
+</div>
+</div>
+</div>
+<!-- Visibility & Tags -->
+<div class="bg-surface-container-lowest rounded-xl p-8 cloud-shadow space-y-8">
+<div>
+<h3 class="text-sm font-bold text-on-surface-variant uppercase tracking-widest mb-4">项目可见性</h3>
+<div class="grid grid-cols-2 gap-3">
+<label class="relative flex items-center gap-3 p-3 rounded-xl bg-surface-container-low border border-transparent cursor-pointer hover:bg-surface-container-high transition-colors">
+<input checked="" class="text-primary focus:ring-primary w-4 h-4" name="privacy" type="radio"/>
+<div class="flex flex-col">
+<span class="text-sm font-bold">公开</span>
+<span class="text-[10px] text-on-surface-variant">组织内所有人可见</span>
+</div>
+</label>
+<label class="relative flex items-center gap-3 p-3 rounded-xl bg-surface-container-low border border-transparent cursor-pointer hover:bg-surface-container-high transition-colors">
+<input class="text-primary focus:ring-primary w-4 h-4" name="privacy" type="radio"/>
+<div class="flex flex-col">
+<span class="text-sm font-bold">私密</span>
+<span class="text-[10px] text-on-surface-variant">仅受邀成员可见</span>
+</div>
+</label>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-bold text-on-surface-variant uppercase tracking-widest mb-4">项目分类 / 标签</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-4 py-2 rounded-full bg-primary-fixed-dim/20 text-primary font-bold text-xs cursor-pointer hover:bg-primary-fixed-dim/30 transition-colors"># 营销策划</span>
+<span class="px-4 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-bold text-xs cursor-pointer hover:bg-surface-container-high transition-colors"># 产品开发</span>
+<span class="px-4 py-2 rounded-full bg-surface-container-highest text-on-surface-variant font-bold text-xs cursor-pointer hover:bg-surface-container-high transition-colors"># 季度Q3</span>
+<button class="w-8 h-8 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center text-outline hover:text-primary hover:border-primary transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Actions -->
+<div class="fixed bottom-0 left-64 right-0 p-8 flex justify-end gap-4 bg-surface/80 backdrop-blur-xl z-40">
+<button class="px-8 py-3 rounded-full text-on-surface-variant font-bold hover:bg-surface-container-high transition-colors">取消</button>
+<button class="bg-primary-gradient px-12 py-3 rounded-full text-white font-bold cloud-shadow cloud-shadow-hover active:scale-95 transition-all">创建项目</button>
+</div>
+</main>
+</body></html>

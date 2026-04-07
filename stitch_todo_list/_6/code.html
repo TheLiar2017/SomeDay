@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curator | 任务大师</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#dee0ff",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#bac3ff",
+                    "secondary-fixed": "#e0e0ff",
+                    "error-container": "#ffdad6",
+                    "on-background": "#191c1e",
+                    "primary-container": "#3f51b5",
+                    "on-secondary-container": "#27308a",
+                    "secondary-container": "#959efd",
+                    "primary": "#24389c",
+                    "on-secondary-fixed": "#000767",
+                    "tertiary-container": "#8f4700",
+                    "inverse-primary": "#bac3ff",
+                    "secondary-fixed-dim": "#bdc2ff",
+                    "surface-container-high": "#e6e8eb",
+                    "secondary": "#4c56af",
+                    "on-tertiary-fixed-variant": "#713700",
+                    "on-primary-container": "#cacfff",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e0e3e6",
+                    "surface-bright": "#f7f9fc",
+                    "background": "#f7f9fc",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#ffc7a2",
+                    "error": "#ba1a1a",
+                    "surface-container": "#eceef1",
+                    "outline-variant": "#c5c5d4",
+                    "on-primary-fixed": "#00105c",
+                    "on-surface": "#191c1e",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-surface-variant": "#454652",
+                    "tertiary": "#6c3400",
+                    "surface-container-highest": "#e0e3e6",
+                    "on-secondary-fixed-variant": "#343d96",
+                    "surface-dim": "#d8dadd",
+                    "surface": "#f7f9fc",
+                    "surface-container-low": "#f2f4f7",
+                    "on-tertiary-fixed": "#301400",
+                    "on-primary-fixed-variant": "#293ca0",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#757684",
+                    "surface-tint": "#4355b9",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb784",
+                    "inverse-on-surface": "#eff1f4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .cloud-shadow {
+        box-shadow: 0 12px 40px rgba(25, 28, 30, 0.06);
+      }
+      .editorial-gradient {
+        background: linear-gradient(135deg, #24389c 0%, #3f51b5 100%);
+      }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed">
+<!-- Background Content (Blurred Context) -->
+<div class="flex h-screen overflow-hidden blur-sm pointer-events-none scale-[1.02]">
+<!-- SideNavBar -->
+<aside class="bg-slate-100 dark:bg-slate-900 h-full w-64 fixed left-0 top-0 flex flex-col py-8 z-10">
+<div class="px-8 mb-10">
+<h1 class="text-xl font-bold font-manrope text-indigo-900 dark:text-white">The Curator</h1>
+<p class="text-xs text-slate-500 font-manrope">编辑任务大师</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 text-indigo-700 dark:text-indigo-400 font-semibold border-l-4 border-indigo-600 pl-4 py-2 bg-slate-200/50">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-sm font-medium">仪表板</span>
+</div>
+<div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-manrope text-sm font-medium">日历</span>
+</div>
+<div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined">folder</span>
+<span class="font-manrope text-sm font-medium">项目</span>
+</div>
+</nav>
+<div class="mt-auto px-5 space-y-1">
+<div class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-manrope text-sm font-medium">设置</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 bg-surface min-h-screen overflow-y-auto">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-white/70 backdrop-blur-xl z-20">
+<div class="flex justify-between items-center px-8 w-full h-full">
+<div class="flex items-center gap-4 bg-surface-container-highest/50 px-4 py-1.5 rounded-full w-96">
+<span class="material-symbols-outlined text-outline">search</span>
+<span class="text-slate-400 text-sm">搜索编辑任务...</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-slate-500 hover:bg-slate-50 rounded-full p-2 transition-all">notifications</span>
+<span class="material-symbols-outlined text-slate-500 hover:bg-slate-50 rounded-full p-2 transition-all">help</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-high">
+<img alt="用户设置" data-alt="Portrait of a young professional with short dark hair and glasses on a neutral light blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCdoLUo7HESMupUIOZqt7NrwXuzfh-wa-1NjxRtKoCd-TgOQAGZSyABDbcOkDhlnukXI22neTHig_0yQbpgnpP0JpIXu0DOnLKwBV9no3gvEsxexjqGHcWU2ChEiZI9um3kapZguMXgCu0ON1WNF6aHVY_DfeTHQC_MBGuoMBQUIjPEBLqZWWACBgJmtHz3Qnrsn2PKHa2KAL6QY4EcL-6Q1E-B0JxlnpeCxZ66V_UeIOoNXTXU1KSoKW9PALi7sg1zD8Ies-4xrUp"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="pt-24 px-12 pb-12">
+<div class="mb-12">
+<h2 class="font-headline font-extrabold text-4xl text-on-surface tracking-tight">今日简报</h2>
+<p class="font-body text-on-surface-variant mt-2">10月24日，星期一 — 您有 8 项待处理任务。</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<div class="col-span-8 space-y-4">
+<div class="bg-surface-container-lowest p-6 rounded-xl cloud-shadow">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-6 h-6 border-2 border-outline-variant rounded-full"></div>
+<h3 class="font-headline font-semibold text-lg">定稿第四季度编辑日历</h3>
+</div>
+<div class="flex gap-4 ml-10">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-medium">策略</span>
+<span class="text-on-surface-variant text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 截止下午 2:00
+                                </span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl cloud-shadow">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-6 h-6 border-2 border-outline-variant rounded-full"></div>
+<h3 class="font-headline font-semibold text-lg">审核访谈记录</h3>
+</div>
+<div class="flex gap-4 ml-10">
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-medium">研究</span>
+<span class="text-on-surface-variant text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 10月25日
+                                </span>
+</div>
+</div>
+</div>
+<div class="col-span-4">
+<div class="bg-primary-container text-on-primary-container p-8 rounded-xl h-full editorial-gradient">
+<h4 class="font-headline font-bold text-2xl mb-4">策展笔记</h4>
+<p class="font-body opacity-90 leading-relaxed text-sm">今天专注于高影响力的编辑任务。您在下午 1:00 到 4:00 之间有充足的深度工作时间。</p>
+<div class="mt-8 flex justify-end">
+<span class="material-symbols-outlined text-4xl opacity-20">auto_awesome</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Modal Overlay Container -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-on-background/10 backdrop-blur-md">
+<!-- Task Creation Modal -->
+<div class="bg-surface-container-lowest w-full max-w-2xl rounded-xl cloud-shadow overflow-hidden flex flex-col max-h-[921px]">
+<!-- Modal Header -->
+<div class="px-10 pt-10 pb-6">
+<h2 class="font-headline font-extrabold text-3xl text-on-surface tracking-tight">创建任务</h2>
+<p class="font-body text-on-surface-variant text-sm mt-1">为您的仪表板分配新的编辑简报。</p>
+</div>
+<!-- Modal Form Content -->
+<form class="px-10 pb-10 space-y-8 overflow-y-auto">
+<!-- Task Title -->
+<div class="space-y-2">
+<label class="font-label font-semibold text-xs uppercase tracking-widest text-primary">任务标题</label>
+<input class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-on-surface placeholder:text-outline focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all font-body" placeholder="例如：进行首页重新设计的用户研究" type="text"/>
+</div>
+<!-- Description -->
+<div class="space-y-2">
+<label class="font-label font-semibold text-xs uppercase tracking-widest text-primary">简要说明</label>
+<textarea class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-on-surface placeholder:text-outline focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all font-body resize-none" placeholder="详细说明核心要求和交付物..." rows="4"></textarea>
+</div>
+<!-- Metadata Row (Date & Project) -->
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label font-semibold text-xs uppercase tracking-widest text-primary">截止日期</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-on-surface focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all font-body appearance-none" type="date"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none group-hover:text-primary transition-colors">calendar_today</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label font-semibold text-xs uppercase tracking-widest text-primary">分配项目</label>
+<div class="relative group">
+<select class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 text-on-surface focus:ring-1 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all font-body appearance-none cursor-pointer">
+<option>内部营销</option>
+<option>产品开发</option>
+<option>客户策略</option>
+<option>策展档案</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-outline pointer-events-none group-hover:text-primary transition-colors">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Priority Selection -->
+<div class="space-y-4">
+<label class="font-label font-semibold text-xs uppercase tracking-widest text-primary">优先级</label>
+<div class="flex gap-3">
+<label class="flex-1 cursor-pointer">
+<input checked="" class="sr-only peer" name="priority" type="radio"/>
+<div class="bg-surface-container-highest text-on-surface-variant text-center py-3 rounded-full font-label font-medium text-sm peer-checked:bg-primary peer-checked:text-on-primary hover:bg-surface-container-high transition-all">
+                                低
+                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="sr-only peer" name="priority" type="radio"/>
+<div class="bg-surface-container-highest text-on-surface-variant text-center py-3 rounded-full font-label font-medium text-sm peer-checked:bg-primary peer-checked:text-on-primary hover:bg-surface-container-high transition-all">
+                                中
+                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="sr-only peer" name="priority" type="radio"/>
+<div class="bg-surface-container-highest text-on-surface-variant text-center py-3 rounded-full font-label font-medium text-sm peer-checked:bg-primary peer-checked:text-on-primary hover:bg-surface-container-high transition-all">
+                                高
+                            </div>
+</label>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-6 flex items-center justify-end gap-6">
+<button class="font-label font-semibold text-xs uppercase tracking-widest text-outline hover:text-on-surface transition-colors px-4 py-2" type="button">
+                        取消
+                    </button>
+<button class="editorial-gradient text-on-primary px-8 py-3 rounded-full font-label font-semibold text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all" type="submit">
+                        创建任务
+                    </button>
+</div>
+</form>
+</div>
+</div>
+</body></html>

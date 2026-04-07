@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Curator - 周计划</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#dee0ff",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#bac3ff",
+                    "secondary-fixed": "#e0e0ff",
+                    "error-container": "#ffdad6",
+                    "on-background": "#191c1e",
+                    "primary-container": "#3f51b5",
+                    "on-secondary-container": "#27308a",
+                    "secondary-container": "#959efd",
+                    "primary": "#24389c",
+                    "on-secondary-fixed": "#000767",
+                    "tertiary-container": "#8f4700",
+                    "inverse-primary": "#bac3ff",
+                    "secondary-fixed-dim": "#bdc2ff",
+                    "surface-container-high": "#e6e8eb",
+                    "secondary": "#4c56af",
+                    "on-tertiary-fixed-variant": "#713700",
+                    "on-primary-container": "#cacfff",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e0e3e6",
+                    "surface-bright": "#f7f9fc",
+                    "background": "#f7f9fc",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#ffc7a2",
+                    "error": "#ba1a1a",
+                    "surface-container": "#eceef1",
+                    "outline-variant": "#c5c5d4",
+                    "on-primary-fixed": "#00105c",
+                    "on-surface": "#191c1e",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-surface-variant": "#454652",
+                    "tertiary": "#6c3400",
+                    "surface-container-highest": "#e0e3e6",
+                    "on-secondary-fixed-variant": "#343d96",
+                    "surface-dim": "#d8dadd",
+                    "surface": "#f7f9fc",
+                    "surface-container-low": "#f2f4f7",
+                    "on-tertiary-fixed": "#301400",
+                    "on-primary-fixed-variant": "#293ca0",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#757684",
+                    "surface-tint": "#4355b9",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb784",
+                    "inverse-on-surface": "#eff1f4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.75rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .cloud-shadow {
+            box-shadow: 0 12px 40px rgba(25, 28, 30, 0.06);
+        }
+        .glass-effect {
+            backdrop-filter: blur(20px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #24389c 0%, #3f51b5 100%);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e0e3e6;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface">
+<!-- SideNavBar Shell -->
+<nav class="bg-slate-100 dark:bg-slate-900 h-full w-64 fixed left-0 top-0 flex flex-col py-8 z-50">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold font-manrope text-indigo-900 dark:text-white">The Curator</h1>
+<p class="font-manrope text-sm font-medium text-slate-500">编辑任务管理器</p>
+</div>
+<div class="flex-1 space-y-2">
+<!-- Navigation Items Mapping -->
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-manrope text-sm font-medium">仪表盘</span>
+</a>
+<!-- Active State Logic: Weekly Planner maps to Calendar -->
+<a class="flex items-center gap-3 text-indigo-700 dark:text-indigo-400 font-semibold border-l-4 border-indigo-600 pl-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-manrope text-sm font-medium">日历</span>
+</a>
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="folder">folder</span>
+<span class="font-manrope text-sm font-medium">项目</span>
+</a>
+</div>
+<div class="space-y-2 mt-auto">
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-manrope text-sm font-medium">设置</span>
+</a>
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 pl-5 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="archive">archive</span>
+<span class="font-manrope text-sm font-medium">归档</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl z-40 flex justify-between items-center px-8">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl" data-icon="search">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition-all" placeholder="搜索任务、归档..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full p-2 transition-all duration-300">
+<span class="material-symbols-outlined text-slate-500" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full p-2 transition-all duration-300">
+<span class="material-symbols-outlined text-slate-500" data-icon="help">help</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden ml-2 ring-2 ring-primary-container/20">
+<img alt="用户头像" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX6fHkcK2MZx0r33muG7VuWvKsxeO24pFkIS8loDyU4KyrC8ceSEtzz6VWvstwR0GcdSmYaZuKRiD76lNBUexPXx0_uFShAna-bpCMuojXNtdJNPaUqgVLP2fZEteCmaADVAY-qv9u_WpU0zUYHD6ypcu1up7V8kHjJIoLW_sccjAGAB-K2yOPB9X3Cq4r9D6cd9XUV44wi8ZgtsijSnEKKrehys8HXIDvVT9CTtuPtho3Jw1tWQ3FE02EvnQlw02ohBRhlnpfKRiC"/>
+</div>
+</div>
+</header>
+<!-- Main Content Stage -->
+<main class="ml-64 pt-24 px-8 pb-12 min-h-screen">
+<header class="mb-10">
+<h2 class="text-4xl font-extrabold font-headline tracking-tight text-on-surface">周计划</h2>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-4">
+<span class="text-on-surface-variant font-medium">2024年10月21日 – 10月27日</span>
+<div class="flex gap-1">
+<button class="p-1 hover:bg-surface-container-high rounded-lg transition-colors"><span class="material-symbols-outlined text-lg" data-icon="chevron_left">chevron_left</span></button>
+<button class="p-1 hover:bg-surface-container-high rounded-lg transition-colors"><span class="material-symbols-outlined text-lg" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+</div>
+</header>
+<!-- 7-Column Weekly Grid -->
+<div class="grid grid-cols-7 gap-4 mb-12">
+<!-- Day Column Template -->
+<div class="space-y-4">
+<div class="px-2 pb-2">
+<h3 class="font-headline font-bold text-lg">周一</h3>
+<p class="text-xs text-outline font-medium">10月21日</p>
+</div>
+<div class="space-y-3">
+<!-- Task Card -->
+<div class="bg-surface-container-lowest p-4 rounded-xl cloud-shadow group hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-2">
+<div class="w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center group-hover:border-primary transition-colors">
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-bold">高</span>
+</div>
+<h4 class="text-sm font-semibold leading-snug mb-3">编辑审核：秋季系列</h4>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-wider">#工作</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl cloud-shadow group hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-2">
+<div class="w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center">
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-bold">中</span>
+</div>
+<h4 class="text-sm font-semibold leading-snug mb-3">设计团队周同步会</h4>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-wider">#同步</span>
+</div>
+</div>
+<button class="w-full py-2 px-3 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-outline text-xs font-bold hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+添加
+</button>
+</div>
+</div>
+<!-- Tuesday -->
+<div class="space-y-4">
+<div class="px-2 pb-2">
+<h3 class="font-headline font-bold text-lg">周二</h3>
+<p class="text-xs text-outline font-medium">10月22日</p>
+</div>
+<div class="space-y-3">
+<div class="bg-surface-container-lowest p-4 rounded-xl cloud-shadow group hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-2">
+<div class="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xs" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-bold">低</span>
+</div>
+<h4 class="text-sm font-medium leading-snug mb-3 text-on-surface-variant line-through">取新的镜头盖</h4>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-wider">#个人</span>
+</div>
+</div>
+<button class="w-full py-2 px-3 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-outline text-xs font-bold hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+添加
+</button>
+</div>
+</div>
+<!-- Wednesday -->
+<div class="space-y-4">
+<div class="px-2 pb-2">
+<h3 class="font-headline font-bold text-lg">周三</h3>
+<p class="text-xs text-outline font-medium">10月23日</p>
+</div>
+<div class="space-y-3">
+<div class="bg-surface-container-lowest p-4 rounded-xl cloud-shadow group hover:bg-surface-container-high transition-all cursor-pointer border-l-4 border-primary">
+<div class="flex items-start justify-between mb-2">
+<div class="w-5 h-5 rounded-full border-2 border-outline-variant"></div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-bold">高</span>
+</div>
+<h4 class="text-sm font-semibold leading-snug mb-3">通讯稿定稿</h4>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-wider">#编辑</span>
+</div>
+</div>
+<button class="w-full py-2 px-3 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-outline text-xs font-bold hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+添加
+</button>
+</div>
+</div>
+<!-- Thursday -->
+<div class="space-y-4">
+<div class="px-2 pb-2 text-primary">
+<h3 class="font-headline font-bold text-lg">周四</h3>
+<p class="text-xs font-bold">今天</p>
+</div>
+<div class="space-y-3">
+<div class="bg-primary/5 p-4 rounded-xl border-2 border-primary/20 group hover:bg-primary/10 transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-2">
+<div class="w-5 h-5 rounded-full border-2 border-primary"></div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-bold">中</span>
+</div>
+<h4 class="text-sm font-bold leading-snug mb-3 text-primary">第四季度预算规划</h4>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-wider">#财务</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl cloud-shadow group hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-2">
+<div class="w-5 h-5 rounded-full border-2 border-outline-variant"></div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-bold">低</span>
+</div>
+<h4 class="text-sm font-semibold leading-snug mb-3">健身房锻炼</h4>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-wider">#健康</span>
+</div>
+</div>
+<button class="w-full py-2 px-3 border-2 border-dashed border-primary/40 rounded-xl flex items-center justify-center gap-2 text-primary text-xs font-bold hover:bg-primary/5 transition-all group">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+添加
+</button>
+</div>
+</div>
+<!-- Friday -->
+<div class="space-y-4">
+<div class="px-2 pb-2">
+<h3 class="font-headline font-bold text-lg">周五</h3>
+<p class="text-xs text-outline font-medium">10月25日</p>
+</div>
+<div class="space-y-3">
+<div class="bg-surface-container-lowest p-4 rounded-xl cloud-shadow group hover:bg-surface-container-high transition-all cursor-pointer">
+<div class="flex items-start justify-between mb-2">
+<div class="w-5 h-5 rounded-full border-2 border-outline-variant"></div>
+<span class="text-[10px] px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-bold">中</span>
+</div>
+<h4 class="text-sm font-semibold leading-snug mb-3">客户演示会</h4>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] text-primary font-bold uppercase tracking-wider">#工作</span>
+</div>
+</div>
+<button class="w-full py-2 px-3 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-outline text-xs font-bold hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+添加
+</button>
+</div>
+</div>
+<!-- Saturday -->
+<div class="space-y-4">
+<div class="px-2 pb-2 opacity-50">
+<h3 class="font-headline font-bold text-lg">周六</h3>
+<p class="text-xs text-outline font-medium">10月26日</p>
+</div>
+<div class="space-y-3">
+<button class="w-full py-2 px-3 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-outline text-xs font-bold hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+添加
+</button>
+</div>
+</div>
+<!-- Sunday -->
+<div class="space-y-4">
+<div class="px-2 pb-2 opacity-50">
+<h3 class="font-headline font-bold text-lg">周日</h3>
+<p class="text-xs text-outline font-medium">10月27日</p>
+</div>
+<div class="space-y-3">
+<button class="w-full py-2 px-3 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-outline text-xs font-bold hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+添加
+</button>
+</div>
+</div>
+</div>
+<!-- Next Week Preview Bento Grid -->
+<section class="mt-16">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-2xl font-bold font-headline">下周预览</h3>
+<button class="text-primary text-xs font-bold uppercase tracking-widest hover:underline transition-all">查看完整月份</button>
+</div>
+<div class="grid grid-cols-12 gap-6">
+<!-- Large Highlight Card -->
+<div class="col-span-8 bg-surface-container-low rounded-2xl p-8 flex items-center gap-8 relative overflow-hidden group">
+<div class="flex-1 z-10">
+<span class="text-[10px] text-primary font-bold uppercase tracking-widest bg-primary-fixed px-3 py-1 rounded-full mb-4 inline-block">重大里程碑</span>
+<h4 class="text-3xl font-headline font-extrabold mb-2">产品发布活动</h4>
+<p class="text-on-surface-variant max-w-sm mb-6">10月29日 — 历时6个月的编辑与设计工作成果展示。</p>
+<button class="primary-gradient text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg shadow-primary/20">设置提醒</button>
+</div>
+<div class="flex-1 relative h-48 rounded-xl overflow-hidden group-hover:scale-105 transition-transform duration-500">
+<img alt="现代办公室室内" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtjXUJGNM3XUi8SslQA9LmHBhtC5Jl11bImx72X_gsKC67WHoicVTLnFBR9GfHvcm-fNp2M0vFIct1fASceV5l5qZRZ7AGzYzvdvD3FBYC6atamHIiaELl_a3T22-0_upEu_MRltPQOJTjk4XLIqPESdCvyvtGjAWd542dfPqS6UrWyZpJbVJ7kxrivu_90Bzm0V1O4a1F4UjQ8nTYnV6hszYyRnltckJaU_MqT-UcX5l4SMsb_3l7FllOw2_W20K9rO3JQgny3Vfv"/>
+</div>
+</div>
+<!-- Secondary Small Cards Stack -->
+<div class="col-span-4 space-y-4">
+<div class="bg-surface-container-lowest p-6 rounded-2xl cloud-shadow border-l-4 border-secondary-container">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined text-secondary-container" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-xs font-bold text-outline">10月30日</span>
+</div>
+<h5 class="font-bold text-sm mb-1">摄影研讨会</h5>
+<p class="text-xs text-on-surface-variant">专注于光影与深度。</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl cloud-shadow border-l-4 border-tertiary">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined text-tertiary" data-icon="restaurant">restaurant</span>
+<span class="text-xs font-bold text-outline">10月31日</span>
+</div>
+<h5 class="font-bold text-sm mb-1">团队庆祝晚宴</h5>
+<p class="text-xs text-on-surface-variant">已预订 "The Alchemist" 餐厅。</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB Suppression: Contextual Action -->
+<button class="fixed bottom-8 right-8 w-14 h-14 primary-gradient text-white rounded-full flex items-center justify-center cloud-shadow hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</body></html>
