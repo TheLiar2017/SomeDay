@@ -26,8 +26,8 @@ function isActive(path: string) {
   <aside class="bg-surface-container-high h-full w-64 fixed left-0 top-0 flex flex-col py-8 z-50">
     <!-- Logo -->
     <div class="px-6 mb-10">
-      <h1 class="text-xl font-bold font-headline text-on-surface">The Curator</h1>
-      <p class="text-xs text-on-surface-variant font-medium mt-1">Editorial Taskmaster</p>
+      <h1 class="text-xl font-bold font-headline text-on-surface">SomeDay</h1>
+      <p class="text-xs text-on-surface-variant font-medium mt-1">Something attempted, something achieved.</p>
     </div>
 
     <!-- Main Nav -->
@@ -44,7 +44,7 @@ function isActive(path: string) {
     </nav>
 
     <!-- Add Task Button -->
-    <div class="px-6 mb-8">
+    <!-- <div class="px-6 mb-8">
       <button
         @click="uiStore.openTaskCreateModal()"
         class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-full font-headline font-semibold text-sm shadow-cloud hover:shadow-cloud-hover hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
@@ -52,7 +52,7 @@ function isActive(path: string) {
         <span class="material-symbols-outlined text-sm">add</span>
         快速添加
       </button>
-    </div>
+    </div> -->
 
     <!-- Bottom Nav -->
     <div class="px-3 mt-auto space-y-1 border-t border-outline-variant/20 pt-6">
