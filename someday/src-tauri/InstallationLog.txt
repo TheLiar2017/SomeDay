@@ -1,0 +1,11 @@
+************************************* Invoked: Wed Apr 8 00:18:32 2026
+[0] Arguments: C:\Users\evild\msys2.exe, search, mingw64
+[14] Operations sanity check succeeded.
+[57] Using metadata cache from "C:/Users/evild/AppData/Local/cache\\qt-installer-framework\\d75f1c19-3379-3717-ae8d-1404b51494a9"
+[57] Found 0 cached items.
+[66] Loaded control script ":/metadata/installer-config/control_js"
+[66] Searching aliases with regular expression: "mingw64"
+[66] No matching package aliases found.
+[66] Searching packages with regular expression: "mingw64"
+[91] Loading component scripts...
+[92] No matching packages found.

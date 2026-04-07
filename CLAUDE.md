@@ -55,7 +55,7 @@ someday/src/
 
 **State management:** Pinia stores connect to Tauri commands (Rust IPC). Task/Project CRUD operations invoke `@tauri-apps/api/core` `invoke()` calls.
 
-**Rust backend:** `src-tauri/src/lib.rs` defines Tauri commands for task/project CRUD, archive operations, and settings — all in-memory with `Mutex<Vec<>>` for now.
+**Rust backend:** `src-tauri/src/lib.rs` defines Tauri commands using SQLite (rusqlite) for persistence. Database stored at `{local_app_data}/someday/someday.db`. Settings use tauri-plugin-store (JSON file). All Tauri commands are defined in the `run()` function with `generate_handler![]`.
 
 ### Design System (Aeon Minimalist)
 
