@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { useSettingsStore } from '@/stores/settingsStore'
 
 const route = useRoute()
+const settingsStore = useSettingsStore()
 
 const navItems = [
   { name: 'dashboard', label: '控制面板', icon: 'dashboard', path: '/' },
@@ -69,12 +71,18 @@ function isActive(path: string) {
     <div class="px-6 mt-6">
       <div class="p-4 bg-surface-container rounded-xl">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-bold text-sm">
-            A
+          <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-bold text-sm overflow-hidden">
+            <img
+              v-if="settingsStore.settings.profile.avatar"
+              :src="settingsStore.settings.profile.avatar"
+              class="w-full h-full object-cover"
+              alt="avatar"
+            />
+            <span v-else>{{ settingsStore.settings.profile.name.charAt(0) }}</span>
           </div>
           <div class="overflow-hidden">
-            <p class="text-xs font-bold text-on-surface truncate">Alex Rivera</p>
-            <p class="text-[10px] text-on-surface-variant truncate">策展人</p>
+            <p class="text-xs font-bold text-on-surface truncate">{{ settingsStore.settings.profile.name }}</p>
+            <p class="text-[10px] text-on-surface-variant truncate">{{ settingsStore.settings.profile.title || '用户' }}</p>
           </div>
         </div>
       </div>
