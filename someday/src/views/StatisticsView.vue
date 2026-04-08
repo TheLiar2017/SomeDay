@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { format, startOfWeek, subDays, addDays, startOfDay, endOfDay, isThisWeek, isThisMonth, isThisYear, eachDayOfInterval, getWeek, startOfMonth, endOfMonth, eachWeekOfInterval, startOfYear, endOfYear } from 'date-fns'
-import { zhCN } from 'date-fns/locale'
+import { format, startOfWeek, addDays, startOfDay, endOfDay, eachDayOfInterval, startOfMonth, startOfYear } from 'date-fns'
 import { useTaskStore } from '@/stores/taskStore'
 import { useProjectStore } from '@/stores/projectStore'
 import { useArchiveStore } from '@/stores/archiveStore'
