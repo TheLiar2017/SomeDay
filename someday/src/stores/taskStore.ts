@@ -58,7 +58,8 @@ export const useTaskStore = defineStore('tasks', () => {
   }
 
   async function completeTask(id: string) {
-    await updateTask(id, { status: 'completed' })
+    // 完成任务时直接归档，而不是标记为completed
+    await updateTask(id, { status: 'archived' })
   }
 
   async function archiveTask(id: string) {

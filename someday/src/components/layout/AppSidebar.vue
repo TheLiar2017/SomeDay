@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { useUiStore } from '@/stores/uiStore'
 
 const route = useRoute()
-const uiStore = useUiStore()
 
 const navItems = [
   { name: 'dashboard', label: '控制面板', icon: 'dashboard', path: '/' },

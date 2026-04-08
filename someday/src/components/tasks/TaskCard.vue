@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { Task } from '@/types/task'
 import AppCheckbox from '@/components/common/AppCheckbox.vue'
 import { useTaskStore } from '@/stores/taskStore'
+import { useProjectStore } from '@/stores/projectStore'
 import { format } from 'date-fns'
 
 const props = defineProps<{
@@ -10,6 +11,7 @@ const props = defineProps<{
 }>()
 
 const taskStore = useTaskStore()
+const projectStore = useProjectStore()
 
 const priorityColors = {
   low: 'bg-secondary-container text-on-secondary-container',
@@ -18,6 +20,12 @@ const priorityColors = {
 }
 
 const isCompleted = computed(() => props.task.status === 'completed')
+
+const projectName = computed(() => {
+  if (!props.task.projectId) return null
+  const project = projectStore.getProjectById(props.task.projectId)
+  return project?.name || null
+})
 
 async function toggleComplete() {
   if (isCompleted.value) {
@@ -64,6 +72,13 @@ const formattedDate = computed(() => {
             </span>
             <span v-if="formattedDate" class="text-xs text-on-surface-variant">
               {{ formattedDate }}
+            </span>
+            <span
+              v-if="projectName"
+              class="text-xs px-2 py-0.5 bg-primary-container/30 text-primary rounded flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-xs">folder</span>
+              {{ projectName }}
             </span>
             <span
               v-for="tag in task.tags"

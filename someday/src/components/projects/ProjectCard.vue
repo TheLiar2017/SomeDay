@@ -15,9 +15,9 @@ const projectTasks = computed(() => taskStore.tasksByProject.get(props.project.i
 import { computed } from 'vue'
 
 const progress = computed(() => {
-  if (projectTasks.value.length === 0) return props.project.progress
-  const completed = projectTasks.value.filter(t => t.status === 'completed').length
-  return Math.round((completed / projectTasks.value.length) * 100)
+  if (projectTasks.value.length === 0) return Math.round(props.project.progress)
+  const pending = projectTasks.value.filter(t => t.status === 'pending').length
+  return Math.round(((projectTasks.value.length - pending) / projectTasks.value.length) * 100)
 })
 
 async function archiveProject() {

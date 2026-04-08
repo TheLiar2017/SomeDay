@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import AppModal from '@/components/common/AppModal.vue'
 import AppButton from '@/components/common/AppButton.vue'
 import AppInput from '@/components/common/AppInput.vue'
 import { useTaskStore } from '@/stores/taskStore'
+import { useProjectStore } from '@/stores/projectStore'
 import { useUiStore } from '@/stores/uiStore'
 import { format } from 'date-fns'
 
@@ -12,13 +13,19 @@ const emit = defineEmits<{
 }>()
 
 const taskStore = useTaskStore()
+const projectStore = useProjectStore()
 const uiStore = useUiStore()
 
 const title = ref('')
 const description = ref('')
 const priority = ref<'low' | 'medium' | 'high'>('medium')
 const dueDate = ref('')
+const projectId = ref('')
 const isSubmitting = ref(false)
+
+onMounted(() => {
+  projectStore.loadProjects()
+})
 
 const presetDates = computed(() => {
   const dates = []
@@ -49,6 +56,7 @@ async function handleSubmit() {
       description: description.value || undefined,
       priority: priority.value,
       dueDate: dueDate.value || undefined,
+      projectId: projectId.value || undefined,
     })
     emit('close')
   } finally {
@@ -146,6 +154,25 @@ async function handleSubmit() {
           v-model="dueDate"
           class="mt-3 input-soft w-full"
         />
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">
+          所属项目
+        </label>
+        <select
+          v-model="projectId"
+          class="w-full input-soft bg-surface-container-highest"
+        >
+          <option value="">无</option>
+          <option
+            v-for="project in projectStore.activeProjects"
+            :key="project.id"
+            :value="project.id"
+          >
+            {{ project.name }}
+          </option>
+        </select>
       </div>
     </form>
 

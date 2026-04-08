@@ -10,7 +10,8 @@ const props = defineProps<{
 
 const taskStore = useTaskStore()
 
-const isCompleted = computed(() => props.task.status === 'completed')
+// 任务在主列表中只显示pending状态，completed已改为archived
+const isCompleted = computed(() => props.task.status !== 'pending')
 
 async function toggleComplete() {
   if (isCompleted.value) {

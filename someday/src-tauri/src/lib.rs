@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use uuid::Uuid;
 use chrono::Utc;
-use tauri::Manager;
+use tauri_plugin_store::StoreExt;
 
 // ============================================================================
 // Data Models
@@ -220,7 +220,7 @@ fn load_tasks(state: tauri::State<DbState>) -> Result<Vec<Task>, String> {
 
     let tasks = stmt
         .query_map([], |row| {
-            let tags_str: String = row.get(8)?;
+            let tags_str: String = row.get(7)?;
             let tags: Vec<String> = serde_json::from_str(&tags_str).unwrap_or_default();
             Ok(Task {
                 id: row.get(0)?,
@@ -249,7 +249,8 @@ fn create_task(state: tauri::State<DbState>, input: CreateTaskInput) -> Result<T
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
     let now = Utc::now().to_rfc3339();
     let id = Uuid::new_v4().to_string();
-    let tags = serde_json::to_string(&input.tags.unwrap_or_default()).unwrap_or_else(|_| "[]".to_string());
+    let tags_vec = input.tags.clone().unwrap_or_default();
+    let tags = serde_json::to_string(&tags_vec).unwrap_or_else(|_| "[]".to_string());
     let priority = input.priority.unwrap_or_else(|| "medium".to_string());
 
     conn.execute(
@@ -265,7 +266,7 @@ fn create_task(state: tauri::State<DbState>, input: CreateTaskInput) -> Result<T
         status: "pending".to_string(),
         due_date: input.due_date,
         project_id: input.project_id,
-        tags: input.tags.unwrap_or_default(),
+        tags: tags_vec,
         created_at: now.clone(),
         updated_at: now,
         completed_at: None,
@@ -285,7 +286,7 @@ fn update_task(state: tauri::State<DbState>, id: String, input: UpdateTaskInput)
 
     let task = stmt
         .query_row(params![id], |row| {
-            let tags_str: String = row.get(8)?;
+            let tags_str: String = row.get(7)?;
             let tags: Vec<String> = serde_json::from_str(&tags_str).unwrap_or_default();
             Ok(Task {
                 id: row.get(0)?,
@@ -395,7 +396,8 @@ fn create_project(state: tauri::State<DbState>, input: CreateProjectInput) -> Re
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
     let now = Utc::now().to_rfc3339();
     let id = Uuid::new_v4().to_string();
-    let tags = serde_json::to_string(&input.tags.unwrap_or_default()).unwrap_or_else(|_| "[]".to_string());
+    let tags_vec = input.tags.clone().unwrap_or_default();
+    let tags = serde_json::to_string(&tags_vec).unwrap_or_else(|_| "[]".to_string());
 
     conn.execute(
         "INSERT INTO projects (id, name, description, status, progress, cover_image, tags, task_ids, created_at, updated_at) VALUES (?1, ?2, ?3, 'active', 0.0, ?4, ?5, '[]', ?6, ?6)",
@@ -409,7 +411,7 @@ fn create_project(state: tauri::State<DbState>, input: CreateProjectInput) -> Re
         status: "active".to_string(),
         progress: 0.0,
         cover_image: input.cover_image,
-        tags: input.tags.unwrap_or_default(),
+        tags: tags_vec,
         task_ids: Vec::new(),
         created_at: now.clone(),
         updated_at: now,
@@ -508,7 +510,7 @@ fn load_archived_tasks(state: tauri::State<DbState>) -> Result<Vec<Task>, String
 
     let tasks = stmt
         .query_map([], |row| {
-            let tags_str: String = row.get(8)?;
+            let tags_str: String = row.get(7)?;
             let tags: Vec<String> = serde_json::from_str(&tags_str).unwrap_or_default();
             Ok(Task {
                 id: row.get(0)?,

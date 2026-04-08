@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { Task, Project } from '@/types'
 import { invoke } from '@tauri-apps/api/core'
+import { useTaskStore } from './taskStore'
+import { useProjectStore } from './projectStore'
 
 export type ArchiveFilter = 'all' | 'tasks' | 'projects'
 
@@ -55,6 +57,9 @@ export const useArchiveStore = defineStore('archive', () => {
   async function restoreTask(id: string) {
     await invoke('restore_task', { id })
     archivedTasks.value = archivedTasks.value.filter(t => t.id !== id)
+    // Reload tasks so restored task appears in main list
+    const taskStore = useTaskStore()
+    await taskStore.loadTasks()
   }
 
   async function permanentlyDeleteTask(id: string) {
@@ -65,6 +70,9 @@ export const useArchiveStore = defineStore('archive', () => {
   async function restoreProject(id: string) {
     await invoke('restore_project', { id })
     archivedProjects.value = archivedProjects.value.filter(p => p.id !== id)
+    // Reload projects so restored project appears in main list
+    const projectStore = useProjectStore()
+    await projectStore.loadProjects()
   }
 
   async function permanentlyDeleteProject(id: string) {

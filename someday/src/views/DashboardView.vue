@@ -13,7 +13,9 @@ const today = new Date()
 const todayStr = format(today, 'yyyy-MM-dd')
 
 const todayTasks = computed(() => taskStore.getTasksForDate(todayStr))
-const pendingCount = computed(() => taskStore.pendingTasks.length)
+// 只统计今天的待办任务
+const pendingCount = computed(() => todayTasks.value.length)
+// 只统计今天完成的任务
 const completedTodayCount = computed(() =>
   taskStore.tasks.filter(t =>
     t.status === 'completed' && t.completedAt &&
