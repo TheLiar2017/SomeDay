@@ -14,21 +14,26 @@ import {
 } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
 import TaskItem from '@/components/tasks/TaskItem.vue'
+import TaskDetailPopup from '@/components/tasks/TaskDetailPopup.vue'
 import { useTaskStore } from '@/stores/taskStore'
 import { useUiStore } from '@/stores/uiStore'
+import type { Task } from '@/types/task'
 
 const taskStore = useTaskStore()
 const uiStore = useUiStore()
 
+const selectedTask = ref<Task | null>(null)
+const selectedTaskPosition = ref<{ x: number; y: number } | null>(null)
+
 const currentMonth = ref(new Date())
 
-const weekDays = ['日', '一', '二', '三', '四', '五', '六']
+const weekDays = ['一', '二', '三', '四', '五', '六', '日']
 
 const calendarDays = computed(() => {
   const monthStart = startOfMonth(currentMonth.value)
   const monthEnd = endOfMonth(currentMonth.value)
-  const calendarStart = startOfWeek(monthStart, { locale: zhCN })
-  const calendarEnd = endOfWeek(monthEnd, { locale: zhCN })
+  const calendarStart = startOfWeek(monthStart, { weekStartsOn: 1 })
+  const calendarEnd = endOfWeek(monthEnd, { weekStartsOn: 1 })
 
   return eachDayOfInterval({ start: calendarStart, end: calendarEnd })
 })
@@ -56,6 +61,22 @@ function goToToday() {
 
 function openTaskCreate(day: Date) {
   uiStore.openTaskCreateModal(format(day, 'yyyy-MM-dd'))
+}
+
+function openTaskDetail(task: Task, event: MouseEvent) {
+  selectedTask.value = task
+  const rect = (event.target as HTMLElement).getBoundingClientRect()
+  selectedTaskPosition.value = { x: rect.left, y: rect.bottom + 8 }
+}
+
+function closeTaskDetail() {
+  selectedTask.value = null
+  selectedTaskPosition.value = null
+}
+
+function isWeekend(day: Date): boolean {
+  const d = day.getDay()
+  return d === 0 || d === 6
 }
 </script>
 
@@ -93,9 +114,12 @@ function openTaskCreate(day: Date) {
     <!-- Weekday headers -->
     <div class="grid grid-cols-7 gap-2 mb-2">
       <div
-        v-for="day in weekDays"
+        v-for="(day, index) in weekDays"
         :key="day"
-        class="text-center text-xs font-semibold text-on-surface-variant uppercase py-2"
+        :class="[
+          'text-center text-xs font-semibold uppercase py-2',
+          index === 0 || index === 6 ? 'text-error/70' : 'text-on-surface-variant',
+        ]"
       >
         {{ day }}
       </div>
@@ -109,7 +133,9 @@ function openTaskCreate(day: Date) {
         :class="[
           'min-h-[120px] rounded-xl p-2 transition-colors cursor-pointer group',
           isSameMonth(day, currentMonth)
-            ? 'bg-surface'
+            ? isWeekend(day)
+              ? 'bg-error-container/20'
+              : 'bg-surface'
             : 'bg-surface-container-low opacity-50',
           isToday(day) ? 'ring-2 ring-primary/30' : '',
         ]"
@@ -119,7 +145,7 @@ function openTaskCreate(day: Date) {
           <span
             :class="[
               'text-sm font-medium',
-              isToday(day) ? 'text-primary font-bold' : 'text-on-surface',
+              isToday(day) ? 'text-primary font-bold' : isWeekend(day) ? 'text-error/80' : 'text-on-surface',
             ]"
           >
             {{ format(day, 'd') }}
@@ -132,11 +158,12 @@ function openTaskCreate(day: Date) {
             <span class="material-symbols-outlined text-xs text-on-surface-variant">add</span>
           </button>
         </div>
-        <div class="space-y-1 overflow-y-auto max-h-[80px]">
+        <div class="space-y-1 overflow-y-auto max-h-[80px]" @click.stop>
           <TaskItem
             v-for="task in getTasksForDay(day).slice(0, 3)"
             :key="task.id"
             :task="task"
+            @task-click="openTaskDetail"
           />
           <div
             v-if="getTasksForDay(day).length > 3"
@@ -147,5 +174,27 @@ function openTaskCreate(day: Date) {
         </div>
       </div>
     </div>
+
+    <!-- Task Detail Popup -->
+    <Teleport to="body">
+      <div
+        v-if="selectedTask && selectedTaskPosition"
+        class="fixed z-[100]"
+        :style="{ left: selectedTaskPosition.x + 'px', top: selectedTaskPosition.y + 'px' }"
+        @click.stop
+      >
+        <TaskDetailPopup
+          :task="selectedTask"
+          :visible="!!selectedTask"
+          @close="closeTaskDetail"
+        />
+      </div>
+      <!-- Backdrop -->
+      <div
+        v-if="selectedTask"
+        class="fixed inset-0 z-[99]"
+        @click="closeTaskDetail"
+      ></div>
+    </Teleport>
   </div>
 </template>

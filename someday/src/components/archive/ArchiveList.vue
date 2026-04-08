@@ -1,14 +1,36 @@
 <script setup lang="ts">
 import { useArchiveStore } from '@/stores/archiveStore'
+import { useProjectStore } from '@/stores/projectStore'
+import { computed, onMounted } from 'vue'
 import { format } from 'date-fns'
 
 const archiveStore = useArchiveStore()
+const projectStore = useProjectStore()
+
+onMounted(() => {
+  projectStore.loadProjects()
+})
 
 const tabs = [
   { key: 'all', label: '全部' },
   { key: 'tasks', label: '任务' },
   { key: 'projects', label: '项目' },
 ] as const
+
+const sortedArchivedTasks = computed(() => {
+  const tasks = archiveStore.filteredArchivedTasks
+  return [...tasks].sort((a, b) => {
+    const dateA = a.completedAt ? new Date(a.completedAt).getTime() : 0
+    const dateB = b.completedAt ? new Date(b.completedAt).getTime() : 0
+    return dateB - dateA
+  })
+})
+
+function getProjectName(projectId: string | undefined): string | null {
+  if (!projectId) return null
+  const project = projectStore.getProjectById(projectId)
+  return project?.name || null
+}
 </script>
 
 <template>
@@ -36,7 +58,7 @@ const tabs = [
       class="space-y-4"
     >
       <div
-        v-for="task in archiveStore.filteredArchivedTasks"
+        v-for="task in sortedArchivedTasks"
         :key="task.id"
         class="bg-surface-container-lowest rounded-xl p-6 group transition-all hover:bg-surface-container-low"
       >
@@ -55,6 +77,13 @@ const tabs = [
                 {{ task.title }}
               </h3>
               <div class="flex items-center gap-3 mt-2">
+                <span
+                  v-if="getProjectName(task.projectId)"
+                  class="text-xs px-2 py-0.5 bg-primary-container/30 text-primary rounded flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-xs">folder</span>
+                  {{ getProjectName(task.projectId) }}
+                </span>
                 <span class="text-xs text-on-surface-variant">
                   完成日期: {{ task.completedAt ? format(new Date(task.completedAt), 'yyyy年MM月dd日') : '-' }}
                 </span>
@@ -132,7 +161,7 @@ const tabs = [
 
     <!-- Empty state -->
     <div
-      v-if="archiveStore.filteredArchivedTasks.length === 0 && archiveStore.filteredArchivedProjects.length === 0"
+      v-if="sortedArchivedTasks.length === 0 && archiveStore.filteredArchivedProjects.length === 0"
       class="text-center py-16 text-on-surface-variant"
     >
       <span class="material-symbols-outlined text-6xl opacity-30">archive</span>

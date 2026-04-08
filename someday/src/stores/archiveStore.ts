@@ -65,6 +65,9 @@ export const useArchiveStore = defineStore('archive', () => {
   async function permanentlyDeleteTask(id: string) {
     await invoke('permanently_delete_task', { id })
     archivedTasks.value = archivedTasks.value.filter(t => t.id !== id)
+    // Also remove from taskStore so dashboard stats update
+    const taskStore = useTaskStore()
+    taskStore.tasks = taskStore.tasks.filter((t: Task) => t.id !== id)
   }
 
   async function restoreProject(id: string) {

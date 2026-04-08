@@ -6,14 +6,18 @@ import { useTaskStore } from '@/stores/taskStore'
 
 const props = defineProps<{
   task: Task
+  disableToggle?: boolean
+}>()
+
+const emit = defineEmits<{
+  'task-click': [task: Task, mouseEvent: MouseEvent]
 }>()
 
 const taskStore = useTaskStore()
 
-// 任务在主列表中只显示pending状态，completed已改为archived
 const isCompleted = computed(() => props.task.status !== 'pending')
 
-async function toggleComplete() {
+async function handleCheckboxClick() {
   if (isCompleted.value) {
     await taskStore.updateTask(props.task.id, { status: 'pending' })
   } else {
@@ -21,31 +25,23 @@ async function toggleComplete() {
   }
 }
 
-const priorityDot = computed(() => {
-  switch (props.task.priority) {
-    case 'high': return 'bg-error'
-    case 'medium': return 'bg-tertiary'
-    case 'low': return 'bg-secondary'
-    default: return 'bg-outline'
-  }
-})
+function handleTitleClick(event: MouseEvent) {
+  emit('task-click', props.task, event)
+}
 </script>
 
 <template>
-  <div
-    :class="[
-      'flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer',
-      isCompleted ? 'opacity-50' : '',
-    ]"
-    @click="toggleComplete"
-  >
-    <AppCheckbox :checked="isCompleted" @update:checked="toggleComplete" />
-    <span :class="['w-2 h-2 rounded-full', priorityDot]"></span>
+  <div class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-surface-container-low transition-colors group">
+    <div @click="handleCheckboxClick">
+      <AppCheckbox :checked="isCompleted" />
+    </div>
+    <span :class="['w-2 h-2 rounded-full', task.priority === 'high' ? 'bg-error' : task.priority === 'medium' ? 'bg-tertiary' : task.priority === 'low' ? 'bg-secondary' : 'bg-outline']"></span>
     <span
       :class="[
-        'text-sm flex-1 truncate',
+        'text-sm flex-1 truncate cursor-pointer',
         isCompleted ? 'line-through text-on-surface-variant' : 'text-on-surface',
       ]"
+      @click="handleTitleClick"
     >
       {{ task.title }}
     </span>

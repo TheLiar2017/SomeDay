@@ -40,7 +40,12 @@ export const useProjectStore = defineStore('projects', () => {
   }
 
   async function archiveProject(id: string) {
-    await updateProject(id, { status: 'archived' })
+    await invoke('archive_project', { id })
+    // Update local state
+    const index = projects.value.findIndex(p => p.id === id)
+    if (index !== -1) {
+      projects.value[index].status = 'archived'
+    }
   }
 
   async function deleteProject(id: string) {

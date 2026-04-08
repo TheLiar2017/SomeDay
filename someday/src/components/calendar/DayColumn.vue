@@ -10,20 +10,32 @@ const props = defineProps<{
   tasks: Task[]
 }>()
 
+const emit = defineEmits()
+
 const uiStore = useUiStore()
 
 const dayLabel = computed(() => format(props.day, 'EEE'))
 const dayNumber = computed(() => format(props.day, 'd'))
 
+const isWeekend = computed(() => {
+  const d = props.day.getDay()
+  return d === 0 || d === 6
+})
+
 function openTaskCreate() {
   uiStore.openTaskCreateModal(format(props.day, 'yyyy-MM-dd'))
+}
+
+function handleTaskClick(task: Task, event: MouseEvent) {
+  emit('task-click', task, event)
 }
 </script>
 
 <template>
   <div
     :class="[
-      'flex flex-col bg-surface rounded-xl min-h-[400px]',
+      'flex flex-col rounded-xl min-h-[400px]',
+      isWeekend ? 'bg-error-container/10' : 'bg-surface',
       isToday(day) ? 'ring-2 ring-primary/30' : '',
     ]"
   >
@@ -33,12 +45,12 @@ function openTaskCreate() {
         <span
           :class="[
             'text-2xl font-bold font-headline',
-            isToday(day) ? 'text-primary' : 'text-on-surface',
+            isToday(day) ? 'text-primary' : isWeekend ? 'text-error/80' : 'text-on-surface',
           ]"
         >
           {{ dayNumber }}
         </span>
-        <span class="text-sm text-on-surface-variant">{{ dayLabel }}</span>
+        <span :class="['text-sm', isWeekend ? 'text-error/60' : 'text-on-surface-variant']">{{ dayLabel }}</span>
         <span
           v-if="isToday(day)"
           class="px-2 py-0.5 bg-primary text-on-primary text-xs rounded-full font-medium"
@@ -54,6 +66,7 @@ function openTaskCreate() {
         v-for="task in tasks"
         :key="task.id"
         :task="task"
+        @task-click="handleTaskClick"
       />
     </div>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import type { Task } from '@/types/task'
 import {
   format,
   startOfWeek,
@@ -8,17 +9,20 @@ import {
   addWeeks,
   subWeeks,
 } from 'date-fns'
-import { zhCN } from 'date-fns/locale'
 import DayColumn from './DayColumn.vue'
+import TaskDetailPopup from '@/components/tasks/TaskDetailPopup.vue'
 import { useTaskStore } from '@/stores/taskStore'
 
 const taskStore = useTaskStore()
 
+const selectedTask = ref<Task | null>(null)
+const selectedTaskPosition = ref<{ x: number; y: number } | null>(null)
+
 const currentWeek = ref(new Date())
 
 const weekDays = computed(() => {
-  const weekStart = startOfWeek(currentWeek.value, { locale: zhCN })
-  const weekEnd = endOfWeek(currentWeek.value, { locale: zhCN })
+  const weekStart = startOfWeek(currentWeek.value, { weekStartsOn: 1 })
+  const weekEnd = endOfWeek(currentWeek.value, { weekStartsOn: 1 })
   return eachDayOfInterval({ start: weekStart, end: weekEnd })
 })
 
@@ -46,6 +50,17 @@ function nextWeek() {
 
 function goToToday() {
   currentWeek.value = new Date()
+}
+
+function openTaskDetail(task: Task, event: MouseEvent) {
+  selectedTask.value = task
+  const rect = (event.target as HTMLElement).getBoundingClientRect()
+  selectedTaskPosition.value = { x: rect.left, y: rect.bottom + 8 }
+}
+
+function closeTaskDetail() {
+  selectedTask.value = null
+  selectedTaskPosition.value = null
 }
 </script>
 
@@ -87,7 +102,30 @@ function goToToday() {
         :key="day.toISOString()"
         :day="day"
         :tasks="getTasksForDay(day)"
+        @task-click="openTaskDetail"
       />
     </div>
+
+    <!-- Task Detail Popup -->
+    <Teleport to="body">
+      <div
+        v-if="selectedTask && selectedTaskPosition"
+        class="fixed z-[100]"
+        :style="{ left: selectedTaskPosition.x + 'px', top: selectedTaskPosition.y + 'px' }"
+        @click.stop
+      >
+        <TaskDetailPopup
+          :task="selectedTask"
+          :visible="!!selectedTask"
+          @close="closeTaskDetail"
+        />
+      </div>
+      <!-- Backdrop -->
+      <div
+        v-if="selectedTask"
+        class="fixed inset-0 z-[99]"
+        @click="closeTaskDetail"
+      ></div>
+    </Teleport>
   </div>
 </template>

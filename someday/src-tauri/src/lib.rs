@@ -313,7 +313,7 @@ fn update_task(state: tauri::State<DbState>, id: String, input: UpdateTaskInput)
     if let Some(priority) = input.priority { updated_task.priority = priority; }
     if let Some(status) = input.status {
         updated_task.status = status.clone();
-        if status == "completed" {
+        if status == "completed" || status == "archived" {
             completed_at = Some(now.clone());
         }
     }
@@ -609,6 +609,28 @@ fn permanently_delete_project(state: tauri::State<DbState>, id: String) -> Resul
     Ok(())
 }
 
+#[tauri::command]
+fn archive_project(state: tauri::State<DbState>, id: String) -> Result<(), String> {
+    let conn = state.conn.lock().map_err(|e| e.to_string())?;
+    let now = Utc::now().to_rfc3339();
+
+    // Archive the project
+    conn.execute(
+        "UPDATE projects SET status = 'archived', archived_at = ?1, updated_at = ?1 WHERE id = ?2",
+        params![now, id],
+    )
+    .map_err(|e| e.to_string())?;
+
+    // Archive all tasks belonging to this project
+    conn.execute(
+        "UPDATE tasks SET status = 'archived', completed_at = ?1, updated_at = ?1 WHERE project_id = ?2 AND status != 'archived'",
+        params![now, id],
+    )
+    .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
 // ============================================================================
 // Settings Commands (JSON via tauri-plugin-store)
 // ============================================================================
@@ -668,6 +690,7 @@ pub fn run() {
             restore_project,
             permanently_delete_task,
             permanently_delete_project,
+            archive_project,
             load_settings,
             save_settings,
         ])
