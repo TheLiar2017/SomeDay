@@ -18,7 +18,7 @@ const pendingCount = computed(() => todayTasks.value.length)
 // 只统计今天完成的任务
 const completedTodayCount = computed(() =>
   taskStore.tasks.filter(t =>
-    t.status === 'completed' && t.completedAt &&
+    t.status === 'archived' && t.completedAt &&
     format(new Date(t.completedAt), 'yyyy-MM-dd') === todayStr
   ).length
 )

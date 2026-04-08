@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#3f51b5",
+                    "primary-container": "#dee0ff",
+                    "on-primary": "#ffffff",
+                    "secondary": "#4c56af",
+                    "on-surface": "#191c1e",
+                    "on-surface-variant": "#454652",
+                    "surface": "#f7f9fc",
+                    "surface-container": "#eceef1",
+                    "surface-container-low": "#f2f4f7",
+                    "surface-container-high": "#e6e8eb",
+                    "surface-container-highest": "#e0e3e6",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#757684",
+                    "outline-variant": "#c5c5d4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "1rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .cloud-shadow {
+            box-shadow: 0 12px 40px rgba(25, 28, 30, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-slate-100 dark:bg-slate-900 flex flex-col py-8 px-4 border-r border-slate-200/20 dark:border-slate-800/20 font-['Manrope'] text-sm tracking-tight">
+<div class="text-2xl font-bold text-primary dark:text-indigo-400 mb-8">The Curator</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Projects -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span>Projects</span>
+</a>
+<!-- Calendar -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span>Calendar</span>
+</a>
+<!-- Archive -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Archive</span>
+</a>
+<!-- Statistics (ACTIVE) -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-indigo-300 font-semibold border-l-4 border-primary bg-slate-200/50 dark:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span>统计</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<!-- User Profile -->
+<div class="mt-auto pt-4 border-t border-slate-200/20 flex items-center gap-3 px-2">
+<img alt="User profile avatar" class="w-10 h-10 rounded-full object-cover" data-alt="close-up portrait of a friendly man with a neat beard in soft daylight with a blurred professional background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG6kYmOrL-h1EN_XzPkbvQ49cME-OHGMxAdndDlMPhicH1gHPhjj-dS1q6G2Fm85vFNKXIXT3RBAaICs23MgH4gSY739s42wk_4vKv5fBYgN9oVZzgMjMnIqBmSqX8YeCpkU_jVnF9v1-7cBmZFBzJJ8PB8jcb6FoCV3nB19omhcPXya-gdpScXPdLJngwf3sF_0MxsS3BvfvQECsXZFnyrH9Q61MWH7-hSrshYuOPVkq4QIDgYSGll0hRYPy4DD0dXIKHiHkO3vs1"/>
+<div>
+<p class="font-bold text-on-surface">林一峰</p>
+<p class="text-xs text-on-surface-variant">个人版用户</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-8 py-6 sticky top-0 z-40 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl font-['Manrope'] font-semibold">
+<h1 class="text-2xl font-extrabold tracking-tight text-on-surface">数据统计</h1>
+<div class="flex items-center gap-4">
+<div class="flex bg-surface-container-high rounded-full p-1">
+<button class="px-4 py-1.5 rounded-full text-sm bg-surface-container-lowest cloud-shadow text-primary font-bold">本周</button>
+<button class="px-4 py-1.5 rounded-full text-sm text-on-surface-variant hover:text-primary transition-colors">本月</button>
+<button class="px-4 py-1.5 rounded-full text-sm text-on-surface-variant hover:text-primary transition-colors">全年</button>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-primary transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-slate-400 hover:text-primary transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Canvas Area -->
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Top Summary Section: Total Tasks Completed & Completion Rates -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="md:col-span-2 bg-surface-container-lowest p-8 rounded-xl cloud-shadow border-l-4 border-primary">
+<span class="text-on-surface-variant text-sm font-medium">累计完成任务</span>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-5xl font-extrabold text-primary">1,284</span>
+<span class="text-xs text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded-full">+12% vs 上月</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl cloud-shadow flex flex-col justify-center">
+<span class="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">本周达成率</span>
+<span class="text-3xl font-extrabold text-on-surface mt-1">85%</span>
+<div class="mt-3 h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl cloud-shadow flex flex-col justify-center">
+<span class="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">本月达成率</span>
+<span class="text-3xl font-extrabold text-on-surface mt-1">92%</span>
+<div class="mt-3 h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[92%]"></div>
+</div>
+</div>
+</div>
+<!-- Middle Section: Task Completion Trend -->
+<div class="bg-surface-container-lowest p-8 rounded-xl cloud-shadow">
+<div class="flex justify-between items-center mb-10">
+<h2 class="text-xl font-bold tracking-tight">任务完成趋势</h2>
+<span class="text-xs font-bold text-primary tracking-widest uppercase">7-Day Analysis</span>
+</div>
+<div class="relative h-64 w-full flex items-end justify-between px-2">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full border-b border-surface-variant/30 h-0"></div>
+<div class="w-full border-b border-surface-variant/30 h-0"></div>
+<div class="w-full border-b border-surface-variant/30 h-0"></div>
+<div class="w-full border-b border-surface-variant/30 h-0"></div>
+</div>
+<!-- Bars -->
+<div class="flex flex-col items-center gap-3 z-10">
+<div class="w-14 bg-surface-container-high rounded-t-lg h-32 hover:bg-primary/20 transition-all duration-300"></div>
+<span class="text-xs font-medium text-on-surface-variant">周一</span>
+</div>
+<div class="flex flex-col items-center gap-3 z-10">
+<div class="w-14 bg-surface-container-high rounded-t-lg h-40 hover:bg-primary/20 transition-all duration-300"></div>
+<span class="text-xs font-medium text-on-surface-variant">周二</span>
+</div>
+<div class="flex flex-col items-center gap-3 z-10">
+<div class="w-14 bg-primary rounded-t-lg h-56 cloud-shadow transition-all duration-300"></div>
+<span class="text-xs font-bold text-primary">周三</span>
+</div>
+<div class="flex flex-col items-center gap-3 z-10">
+<div class="w-14 bg-surface-container-high rounded-t-lg h-36 hover:bg-primary/20 transition-all duration-300"></div>
+<span class="text-xs font-medium text-on-surface-variant">周四</span>
+</div>
+<div class="flex flex-col items-center gap-3 z-10">
+<div class="w-14 bg-surface-container-high rounded-t-lg h-24 hover:bg-primary/20 transition-all duration-300"></div>
+<span class="text-xs font-medium text-on-surface-variant">周五</span>
+</div>
+<div class="flex flex-col items-center gap-3 z-10">
+<div class="w-14 bg-surface-container-high rounded-t-lg h-20 hover:bg-primary/20 transition-all duration-300"></div>
+<span class="text-xs font-medium text-on-surface-variant">周六</span>
+</div>
+<div class="flex flex-col items-center gap-3 z-10">
+<div class="w-14 bg-surface-container-high rounded-t-lg h-28 hover:bg-primary/20 transition-all duration-300"></div>
+<span class="text-xs font-medium text-on-surface-variant">周日</span>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Recently Completed Tasks -->
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold tracking-tight">最近完成的成就</h2>
+<button class="text-primary text-xs font-bold uppercase tracking-wider hover:opacity-70">查看全部档案</button>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<div class="bg-surface-container-lowest p-6 rounded-xl flex items-center justify-between border border-transparent hover:border-primary/20 transition-all duration-200">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-lg">完成《Q4 季度规划报告》最终稿</h4>
+<div class="flex gap-4 mt-1">
+<span class="text-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">folder</span> 
+                                    日常工作
+                                </span>
+</div>
+</div>
+</div>
+<span class="text-sm font-medium text-on-surface-variant">2小时前</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl flex items-center justify-between border border-transparent hover:border-primary/20 transition-all duration-200">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-lg">更新个人作品集网站</h4>
+<div class="flex gap-4 mt-1">
+<span class="text-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">brush</span> 
+                                    创意写作
+                                </span>
+</div>
+</div>
+</div>
+<span class="text-sm font-medium text-on-surface-variant">昨天 16:20</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl flex items-center justify-between border border-transparent hover:border-primary/20 transition-all duration-200">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-lg">阅读《设计心理学》三章</h4>
+<div class="flex gap-4 mt-1">
+<span class="text-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">auto_stories</span> 
+                                    自我提升
+                                </span>
+</div>
+</div>
+</div>
+<span class="text-sm font-medium text-on-surface-variant">2023年10月24日</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

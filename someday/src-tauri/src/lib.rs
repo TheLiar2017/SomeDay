@@ -43,6 +43,8 @@ pub struct Project {
     pub tags: Vec<String>,
     #[serde(rename = "taskIds")]
     pub task_ids: Vec<String>,
+    #[serde(rename = "dueDate")]
+    pub due_date: Option<String>,
     #[serde(rename = "createdAt")]
     pub created_at: String,
     #[serde(rename = "updatedAt")]
@@ -85,6 +87,8 @@ pub struct CreateProjectInput {
     #[serde(rename = "coverImage")]
     pub cover_image: Option<String>,
     pub tags: Option<Vec<String>>,
+    #[serde(rename = "dueDate")]
+    pub due_date: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -94,6 +98,8 @@ pub struct UpdateProjectInput {
     pub status: Option<String>,
     pub progress: Option<f64>,
     pub tags: Option<Vec<String>>,
+    #[serde(rename = "dueDate")]
+    pub due_date: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -179,6 +185,7 @@ fn init_db(conn: &Connection) -> Result<(), rusqlite::Error> {
             cover_image TEXT,
             tags TEXT NOT NULL DEFAULT '[]',
             task_ids TEXT NOT NULL DEFAULT '[]',
+            due_date TEXT,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
             completed_at TEXT,
@@ -186,6 +193,18 @@ fn init_db(conn: &Connection) -> Result<(), rusqlite::Error> {
         )",
         [],
     )?;
+
+    // Migration: add due_date column if it doesn't exist (for existing databases)
+    let result = conn.execute(
+        "SELECT due_date FROM projects LIMIT 1",
+        [],
+    );
+    if result.is_err() {
+        conn.execute(
+            "ALTER TABLE projects ADD COLUMN due_date TEXT",
+            [],
+        ).ok();
+    }
 
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status)",
@@ -215,7 +234,7 @@ fn init_db(conn: &Connection) -> Result<(), rusqlite::Error> {
 fn load_tasks(state: tauri::State<DbState>) -> Result<Vec<Task>, String> {
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
     let mut stmt = conn
-        .prepare("SELECT id, title, description, priority, status, due_date, project_id, tags, created_at, updated_at, completed_at, archived_at FROM tasks WHERE status != 'archived'")
+        .prepare("SELECT id, title, description, priority, status, due_date, project_id, tags, created_at, updated_at, completed_at, archived_at FROM tasks")
         .map_err(|e| e.to_string())?;
 
     let tasks = stmt
@@ -360,7 +379,7 @@ fn delete_task(state: tauri::State<DbState>, id: String) -> Result<(), String> {
 fn load_projects(state: tauri::State<DbState>) -> Result<Vec<Project>, String> {
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
     let mut stmt = conn
-        .prepare("SELECT id, name, description, status, progress, cover_image, tags, task_ids, created_at, updated_at, completed_at, archived_at FROM projects WHERE status != 'archived'")
+        .prepare("SELECT id, name, description, status, progress, cover_image, tags, task_ids, due_date, created_at, updated_at, completed_at, archived_at FROM projects WHERE status != 'archived'")
         .map_err(|e| e.to_string())?;
 
     let projects = stmt
@@ -378,10 +397,11 @@ fn load_projects(state: tauri::State<DbState>) -> Result<Vec<Project>, String> {
                 cover_image: row.get(5)?,
                 tags,
                 task_ids,
-                created_at: row.get(8)?,
-                updated_at: row.get(9)?,
-                completed_at: row.get(10)?,
-                archived_at: row.get(11)?,
+                due_date: row.get(8)?,
+                created_at: row.get(9)?,
+                updated_at: row.get(10)?,
+                completed_at: row.get(11)?,
+                archived_at: row.get(12)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -400,8 +420,8 @@ fn create_project(state: tauri::State<DbState>, input: CreateProjectInput) -> Re
     let tags = serde_json::to_string(&tags_vec).unwrap_or_else(|_| "[]".to_string());
 
     conn.execute(
-        "INSERT INTO projects (id, name, description, status, progress, cover_image, tags, task_ids, created_at, updated_at) VALUES (?1, ?2, ?3, 'active', 0.0, ?4, ?5, '[]', ?6, ?6)",
-        params![id, input.name, input.description, input.cover_image, tags, now],
+        "INSERT INTO projects (id, name, description, status, progress, cover_image, tags, task_ids, due_date, created_at, updated_at) VALUES (?1, ?2, ?3, 'active', 0.0, ?4, ?5, '[]', ?6, ?7, ?7)",
+        params![id, input.name, input.description, input.cover_image, tags, input.due_date, now],
     ).map_err(|e| e.to_string())?;
 
     Ok(Project {
@@ -413,6 +433,7 @@ fn create_project(state: tauri::State<DbState>, input: CreateProjectInput) -> Re
         cover_image: input.cover_image,
         tags: tags_vec,
         task_ids: Vec::new(),
+        due_date: input.due_date,
         created_at: now.clone(),
         updated_at: now,
         completed_at: None,
@@ -426,7 +447,7 @@ fn update_project(state: tauri::State<DbState>, id: String, input: UpdateProject
     let now = Utc::now().to_rfc3339();
 
     let mut stmt = conn
-        .prepare("SELECT id, name, description, status, progress, cover_image, tags, task_ids, created_at, updated_at, completed_at, archived_at FROM projects WHERE id = ?1")
+        .prepare("SELECT id, name, description, status, progress, cover_image, tags, task_ids, due_date, created_at, updated_at, completed_at, archived_at FROM projects WHERE id = ?1")
         .map_err(|e| e.to_string())?;
 
     let project = stmt
@@ -444,10 +465,11 @@ fn update_project(state: tauri::State<DbState>, id: String, input: UpdateProject
                 cover_image: row.get(5)?,
                 tags,
                 task_ids,
-                created_at: row.get(8)?,
-                updated_at: row.get(9)?,
-                completed_at: row.get(10)?,
-                archived_at: row.get(11)?,
+                due_date: row.get(8)?,
+                created_at: row.get(9)?,
+                updated_at: row.get(10)?,
+                completed_at: row.get(11)?,
+                archived_at: row.get(12)?,
             })
         })
         .map_err(|e| e.to_string())?;
@@ -465,6 +487,7 @@ fn update_project(state: tauri::State<DbState>, id: String, input: UpdateProject
     }
     if let Some(progress) = input.progress { updated_project.progress = progress; }
     if let Some(tags) = input.tags { updated_project.tags = tags; }
+    if let Some(due_date) = input.due_date { updated_project.due_date = Some(due_date); }
     updated_project.updated_at = now;
     updated_project.completed_at = completed_at;
 
@@ -472,7 +495,7 @@ fn update_project(state: tauri::State<DbState>, id: String, input: UpdateProject
     let task_ids = serde_json::to_string(&updated_project.task_ids).unwrap_or_else(|_| "[]".to_string());
 
     conn.execute(
-        "UPDATE projects SET name = ?1, description = ?2, status = ?3, progress = ?4, tags = ?5, task_ids = ?6, updated_at = ?7, completed_at = ?8 WHERE id = ?9",
+        "UPDATE projects SET name = ?1, description = ?2, status = ?3, progress = ?4, tags = ?5, task_ids = ?6, due_date = ?7, updated_at = ?8, completed_at = ?9 WHERE id = ?10",
         params![
             updated_project.name,
             updated_project.description,
@@ -480,6 +503,7 @@ fn update_project(state: tauri::State<DbState>, id: String, input: UpdateProject
             updated_project.progress,
             tags,
             task_ids,
+            updated_project.due_date,
             updated_project.updated_at,
             updated_project.completed_at,
             id
@@ -492,6 +516,9 @@ fn update_project(state: tauri::State<DbState>, id: String, input: UpdateProject
 #[tauri::command]
 fn delete_project(state: tauri::State<DbState>, id: String) -> Result<(), String> {
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
+    // Clear project_id from associated tasks before deleting the project
+    conn.execute("UPDATE tasks SET project_id = NULL WHERE project_id = ?1", params![id])
+        .map_err(|e| e.to_string())?;
     conn.execute("DELETE FROM projects WHERE id = ?1", params![id])
         .map_err(|e| e.to_string())?;
     Ok(())
@@ -538,7 +565,7 @@ fn load_archived_tasks(state: tauri::State<DbState>) -> Result<Vec<Task>, String
 fn load_archived_projects(state: tauri::State<DbState>) -> Result<Vec<Project>, String> {
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
     let mut stmt = conn
-        .prepare("SELECT id, name, description, status, progress, cover_image, tags, task_ids, created_at, updated_at, completed_at, archived_at FROM projects WHERE status = 'archived'")
+        .prepare("SELECT id, name, description, status, progress, cover_image, tags, task_ids, due_date, created_at, updated_at, completed_at, archived_at FROM projects WHERE status = 'archived'")
         .map_err(|e| e.to_string())?;
 
     let projects = stmt
@@ -556,10 +583,11 @@ fn load_archived_projects(state: tauri::State<DbState>) -> Result<Vec<Project>, 
                 cover_image: row.get(5)?,
                 tags,
                 task_ids,
-                created_at: row.get(8)?,
-                updated_at: row.get(9)?,
-                completed_at: row.get(10)?,
-                archived_at: row.get(11)?,
+                due_date: row.get(8)?,
+                created_at: row.get(9)?,
+                updated_at: row.get(10)?,
+                completed_at: row.get(11)?,
+                archived_at: row.get(12)?,
             })
         })
         .map_err(|e| e.to_string())?
@@ -574,7 +602,7 @@ fn restore_task(state: tauri::State<DbState>, id: String) -> Result<(), String> 
     let conn = state.conn.lock().map_err(|e| e.to_string())?;
     let now = Utc::now().to_rfc3339();
     conn.execute(
-        "UPDATE tasks SET status = 'pending', archived_at = NULL, updated_at = ?1 WHERE id = ?2",
+        "UPDATE tasks SET status = 'pending', completed_at = NULL, archived_at = NULL, updated_at = ?1 WHERE id = ?2",
         params![now, id],
     )
     .map_err(|e| e.to_string())?;

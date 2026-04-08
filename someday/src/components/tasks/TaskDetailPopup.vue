@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import type { Task } from '@/types/task'
 import AppCheckbox from '@/components/common/AppCheckbox.vue'
 import { useTaskStore } from '@/stores/taskStore'
@@ -8,6 +8,7 @@ import { useProjectStore } from '@/stores/projectStore'
 const props = defineProps<{
   task: Task
   visible: boolean
+  position?: { top: number; left: number }
 }>()
 
 const emit = defineEmits<{
@@ -93,16 +94,40 @@ function onProjectChange() {
   debouncedUpdate({ projectId: editProjectId.value || undefined })
 }
 
+function handleClickOutside(event: MouseEvent) {
+  const target = event.target as HTMLElement
+  if (!target.closest('.task-detail-popup')) {
+    emit('close')
+  }
+}
+
 onMounted(() => {
   projectStore.loadProjects()
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+const popupStyle = computed(() => {
+  console.log('popupStyle called, position:', props.position)
+  if (props.position) {
+    return {
+      top: `${props.position.top}px`,
+      left: `${props.position.left}px`,
+    }
+  }
+  return {}
 })
 </script>
 
 <template>
   <div
     v-if="visible"
-    class="absolute z-50 bg-surface-container-lowest rounded-xl shadow-elevation3 border border-outline/10 overflow-hidden"
+    class="fixed z-50 bg-surface-container-lowest rounded-xl shadow-cloud border border-outline/10 overflow-hidden task-detail-popup"
     style="min-width: 400px; max-width: 500px;"
+    :style="popupStyle"
   >
     <!-- Header -->
     <div class="flex items-center gap-3 px-4 py-3 border-b border-outline/10">

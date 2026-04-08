@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import AppButton from '@/components/common/AppButton.vue'
 import AppModal from '@/components/common/AppModal.vue'
 import AppInput from '@/components/common/AppInput.vue'
+import TaskDetailPopup from '@/components/tasks/TaskDetailPopup.vue'
 import { useProjectStore } from '@/stores/projectStore'
 import { useTaskStore } from '@/stores/taskStore'
 import type { Project, Task } from '@/types'
@@ -14,8 +15,21 @@ const taskStore = useTaskStore()
 const showCreateModal = ref(false)
 const newProjectName = ref('')
 const newProjectDesc = ref('')
+const newProjectDueDate = ref('')
 const selectedProjectId = ref<string | null>(null)
 const newTaskTitle = ref('')
+const newTaskPriority = ref<'low' | 'medium' | 'high'>('medium')
+const newTaskDueDate = ref(format(new Date(), 'yyyy-MM-dd'))
+
+const showEditModal = ref(false)
+const editProjectName = ref('')
+const editProjectDesc = ref('')
+const editProjectDueDate = ref('')
+const editingProjectId = ref<string | null>(null)
+
+const selectedTask = ref<Task | null>(null)
+const showTaskDetail = ref(false)
+const taskPosition = ref<{ top: number; left: number }>({ top: 0, left: 0 })
 
 onMounted(() => {
   projectStore.loadProjects()
@@ -55,27 +69,19 @@ const projectStats = computed(() => {
 })
 
 const nextDueProject = computed(() => {
-  // Find the project with nearest due date among pending tasks
-  let nearestTask: Task | null = null
-  let nearestDate = Infinity
+  // Find the project with nearest due date
+  const projectsWithDueDate = projectStore.activeProjects
+    .filter(p => p.dueDate)
+    .sort((a, b) => new Date(a.dueDate!).getTime() - new Date(b.dueDate!).getTime())
 
-  const tasks = taskStore.pendingTasks
-  for (const task of tasks) {
-    if (task.projectId && task.dueDate) {
-      const dueTime = new Date(task.dueDate).getTime()
-      if (dueTime < nearestDate) {
-        nearestDate = dueTime
-        nearestTask = task
-      }
-    }
-  }
+  if (projectsWithDueDate.length === 0) return null
+  const nearestProject = projectsWithDueDate[0]
+  const dueDate = new Date(nearestProject.dueDate!)
+  const daysLeft = Math.ceil((dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
 
-  if (!nearestTask) return null
-  const project = projectStore.getProjectById(nearestTask.projectId!)
   return {
-    project,
-    task: nearestTask,
-    daysLeft: Math.ceil((nearestDate - Date.now()) / (1000 * 60 * 60 * 24))
+    project: nearestProject,
+    daysLeft
   }
 })
 
@@ -88,9 +94,11 @@ async function createProject() {
   await projectStore.createProject({
     name: newProjectName.value,
     description: newProjectDesc.value || undefined,
+    dueDate: newProjectDueDate.value || undefined,
   })
   newProjectName.value = ''
   newProjectDesc.value = ''
+  newProjectDueDate.value = ''
   showCreateModal.value = false
 }
 
@@ -99,12 +107,43 @@ async function createTask() {
   await taskStore.createTask({
     title: newTaskTitle.value,
     projectId: selectedProjectId.value,
+    priority: newTaskPriority.value,
+    dueDate: newTaskDueDate.value || undefined,
   })
   newTaskTitle.value = ''
+  newTaskPriority.value = 'medium'
+  newTaskDueDate.value = format(new Date(), 'yyyy-MM-dd')
+}
+
+function openEditModal(project: Project) {
+  editingProjectId.value = project.id
+  editProjectName.value = project.name
+  editProjectDesc.value = project.description || ''
+  editProjectDueDate.value = project.dueDate || ''
+  showEditModal.value = true
+}
+
+async function updateProject() {
+  if (!editingProjectId.value || !editProjectName.value.trim()) return
+  await projectStore.updateProject(editingProjectId.value, {
+    name: editProjectName.value,
+    description: editProjectDesc.value || undefined,
+    dueDate: editProjectDueDate.value || undefined,
+  })
+  showEditModal.value = false
+  editingProjectId.value = null
 }
 
 async function archiveProject(projectId: string) {
   await projectStore.archiveProject(projectId)
+  if (selectedProjectId.value === projectId) {
+    selectedProjectId.value = null
+  }
+}
+
+async function deleteProject(projectId: string) {
+  await projectStore.deleteProject(projectId)
+  await taskStore.loadTasks()
   if (selectedProjectId.value === projectId) {
     selectedProjectId.value = null
   }
@@ -141,6 +180,47 @@ function formatTaskDate(dateStr: string | undefined): string {
   if (format(date, 'yyyy-MM-dd') === format(today, 'yyyy-MM-dd')) return '今天'
   if (format(date, 'yyyy-MM-dd') === format(tomorrow, 'yyyy-MM-dd')) return '明天'
   return format(date, 'MM月dd日')
+}
+
+function openTaskDetail(task: Task, event: MouseEvent) {
+  event.stopPropagation()
+  selectedTask.value = task
+  showTaskDetail.value = true
+  // Position popup relative to the clicked task item's edge
+  const target = event.currentTarget as HTMLElement
+  const rect = target.getBoundingClientRect()
+  const popupWidth = 500
+  const popupHeight = 400
+  const offset = 8
+
+  // Check if popup would overflow on the right
+  if (rect.right + popupWidth + offset > window.innerWidth) {
+    // Position to the left: popup's right edge touches task's left edge
+    taskPosition.value = {
+      top: Math.max(0, Math.min(rect.top, window.innerHeight - popupHeight - offset)),
+      left: rect.left - popupWidth - offset
+    }
+  } else {
+    // Position to the right: popup's left edge touches task's right edge
+    taskPosition.value = {
+      top: Math.max(0, Math.min(rect.top, window.innerHeight - popupHeight - offset)),
+      left: rect.right + offset
+    }
+  }
+}
+
+function closeTaskDetail() {
+  showTaskDetail.value = false
+  selectedTask.value = null
+}
+
+async function toggleTaskComplete(task: Task, event: Event) {
+  event.stopPropagation()
+  if (task.status === 'pending') {
+    await taskStore.completeTask(task.id)
+  } else {
+    await taskStore.updateTask(task.id, { status: 'pending' })
+  }
 }
 </script>
 
@@ -191,8 +271,8 @@ function formatTaskDate(dateStr: string | undefined): string {
           <p class="text-[11px] mt-0.5 opacity-90">剩余 {{ nextDueProject.daysLeft }} 天</p>
         </div>
         <div v-else>
-          <p class="text-on-primary/80 text-[10px] uppercase font-bold tracking-wider mb-0.5">暂无待办</p>
-          <p class="text-sm opacity-90">所有任务已完成</p>
+          <p class="text-on-primary/80 text-[10px] uppercase font-bold tracking-wider mb-0.5">暂无截止日期</p>
+          <p class="text-sm opacity-90">所有项目都未设置截止日期</p>
         </div>
       </div>
     </div>
@@ -216,13 +296,40 @@ function formatTaskDate(dateStr: string | undefined): string {
             <div class="p-2.5 bg-secondary-fixed text-on-secondary-fixed rounded-lg">
               <span class="material-symbols-outlined text-[20px]">folder</span>
             </div>
-            <span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded">
-              {{ project.taskIds?.length || 0 }} 任务
-            </span>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded">
+                {{ getTaskCount(project.id).pending }} 待办
+              </span>
+              <button
+                @click.stop="archiveProject(project.id)"
+                class="p-1.5 hover:bg-surface-container-high rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                title="归档项目"
+              >
+                <span class="material-symbols-outlined text-on-surface-variant text-sm">archive</span>
+              </button>
+              <button
+                @click.stop="deleteProject(project.id)"
+                class="p-1.5 hover:bg-error-container rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                title="删除项目"
+              >
+                <span class="material-symbols-outlined text-error text-sm">delete</span>
+              </button>
+              <button
+                @click.stop="openEditModal(project)"
+                class="p-1.5 hover:bg-surface-container-high rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                title="编辑项目"
+              >
+                <span class="material-symbols-outlined text-on-surface-variant text-sm">edit</span>
+              </button>
+            </div>
           </div>
           <h3 class="text-base font-bold text-on-surface mb-1">{{ project.name }}</h3>
-          <p v-if="project.description" class="text-on-surface-variant text-xs mb-3 line-clamp-2">
+          <p v-if="project.description" class="text-on-surface-variant text-xs mb-1 line-clamp-2">
             {{ project.description }}
+          </p>
+          <p v-if="project.dueDate" class="text-[10px] text-primary font-medium mb-3 flex items-center">
+            <span class="material-symbols-outlined text-[12px] mr-1">event</span>
+            截止: {{ formatTaskDate(project.dueDate) }}
           </p>
           <div class="space-y-2">
             <div class="flex justify-between items-center text-[11px]">
@@ -243,15 +350,6 @@ function formatTaskDate(dateStr: string | undefined): string {
           <div v-if="selectedProjectId === project.id" class="absolute right-4 top-1/2 -translate-y-1/2 text-primary">
             <span class="material-symbols-outlined">chevron_right</span>
           </div>
-          <div class="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-              @click.stop="archiveProject(project.id)"
-              class="p-1.5 hover:bg-surface-container-high rounded-full transition-colors"
-              title="归档项目"
-            >
-              <span class="material-symbols-outlined text-on-surface-variant text-sm">archive</span>
-            </button>
-          </div>
         </div>
 
         <!-- Empty State -->
@@ -266,11 +364,24 @@ function formatTaskDate(dateStr: string | undefined): string {
       </div>
 
       <!-- Right: Task List Pane -->
-      <div class="w-1/2 flex flex-col bg-surface-container-lowest rounded-xl border border-outline/10 overflow-hidden">
+      <div v-if="selectedProjectId" class="w-1/2 flex flex-col bg-surface-container-lowest rounded-xl border border-outline/10 overflow-hidden">
         <!-- Task List Header -->
         <div class="p-6 border-b border-outline/10 flex justify-between items-center bg-surface-bright/50">
           <div v-if="selectedProject">
-            <h3 class="text-lg font-extrabold text-on-surface">{{ selectedProject.name }} · 任务清单</h3>
+            <div class="flex items-center gap-2">
+              <h3 class="text-lg font-extrabold text-on-surface">{{ selectedProject.name }}</h3>
+              <button
+                @click="openEditModal(selectedProject)"
+                class="p-1 hover:bg-surface-container-high rounded transition-colors"
+                title="编辑项目"
+              >
+                <span class="material-symbols-outlined text-on-surface-variant text-sm">edit</span>
+              </button>
+            </div>
+            <p v-if="selectedProject.dueDate" class="text-[11px] text-primary flex items-center mt-1">
+              <span class="material-symbols-outlined text-[14px] mr-1">event</span>
+              截止日期: {{ formatTaskDate(selectedProject.dueDate) }}
+            </p>
             <p class="text-[11px] text-on-surface-variant flex items-center mt-1">
               <span class="material-symbols-outlined text-[14px] mr-1">check_circle</span>
               {{ completedTasks.length }} 项任务已完成
@@ -294,9 +405,13 @@ function formatTaskDate(dateStr: string | undefined): string {
               <div
                 v-for="task in pendingTasks"
                 :key="task.id"
-                class="flex items-center p-3 bg-primary/5 rounded-lg border border-primary/10 group"
+                class="flex items-center p-3 bg-primary/5 rounded-lg border border-primary/10 group cursor-pointer hover:bg-primary/10 transition-colors"
+                @click="openTaskDetail(task, $event)"
               >
-                <div class="w-5 h-5 border-2 border-primary/30 rounded flex items-center justify-center cursor-pointer mr-4 bg-white"></div>
+                <div
+                  class="w-5 h-5 border-2 border-primary/30 rounded flex items-center justify-center cursor-pointer mr-4 bg-white hover:border-primary transition-colors"
+                  @click="toggleTaskComplete(task, $event)"
+                ></div>
                 <div class="flex-1">
                   <p class="text-sm font-semibold text-on-surface">{{ task.title }}</p>
                   <div class="flex items-center gap-3 mt-1">
@@ -320,9 +435,13 @@ function formatTaskDate(dateStr: string | undefined): string {
               <div
                 v-for="task in completedTasks"
                 :key="task.id"
-                class="flex items-center p-3 opacity-60 grayscale-[0.5] group"
+                class="flex items-center p-3 opacity-60 grayscale-[0.5] group cursor-pointer hover:opacity-80 transition-opacity"
+                @click="openTaskDetail(task, $event)"
               >
-                <div class="w-5 h-5 bg-primary rounded flex items-center justify-center cursor-pointer mr-4">
+                <div
+                  class="w-5 h-5 bg-primary rounded flex items-center justify-center cursor-pointer mr-4 hover:brightness-110 transition-colors"
+                  @click="toggleTaskComplete(task, $event)"
+                >
                   <span class="material-symbols-outlined text-white text-[16px]">check</span>
                 </div>
                 <div class="flex-1">
@@ -358,14 +477,37 @@ function formatTaskDate(dateStr: string | undefined): string {
 
         <!-- Quick Add Task -->
         <div v-if="selectedProject" class="p-4 bg-surface-bright/50 border-t border-outline/10">
-          <form @submit.prevent="createTask" class="relative flex items-center">
-            <span class="material-symbols-outlined absolute left-3 text-outline text-[20px]">add</span>
-            <input
-              v-model="newTaskTitle"
-              class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline/20 rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all"
-              placeholder="添加新任务..."
-              type="text"
-            />
+          <form @submit.prevent="createTask" class="space-y-3">
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3 text-outline text-[20px]">add</span>
+              <input
+                v-model="newTaskTitle"
+                class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline/20 rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all"
+                placeholder="添加新任务..."
+                type="text"
+              />
+            </div>
+            <div class="flex gap-2 items-center">
+              <select
+                v-model="newTaskPriority"
+                class="px-2 py-1.5 bg-surface-container-lowest border border-outline/20 rounded-lg text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all"
+              >
+                <option value="low">低优先级</option>
+                <option value="medium">中优先级</option>
+                <option value="high">高优先级</option>
+              </select>
+              <input
+                v-model="newTaskDueDate"
+                type="date"
+                class="px-2 py-1.5 bg-surface-container-lowest border border-outline/20 rounded-lg text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all"
+              />
+              <button
+                type="submit"
+                class="ml-auto px-4 py-1.5 bg-primary text-on-primary rounded-lg text-xs font-semibold hover:brightness-110 transition-all"
+              >
+                添加
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -397,6 +539,17 @@ function formatTaskDate(dateStr: string | undefined): string {
           class="w-full input-soft resize-none"
         ></textarea>
       </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">
+          截止日期
+        </label>
+        <input
+          v-model="newProjectDueDate"
+          type="date"
+          class="w-full input-soft"
+        />
+      </div>
     </form>
 
     <template #footer>
@@ -412,6 +565,67 @@ function formatTaskDate(dateStr: string | undefined): string {
       </div>
     </template>
   </AppModal>
+
+  <!-- Edit Project Modal -->
+  <AppModal v-if="showEditModal" title="编辑项目" @close="showEditModal = false">
+    <form @submit.prevent="updateProject" class="space-y-6">
+      <div>
+        <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">
+          项目名称 *
+        </label>
+        <AppInput
+          v-model="editProjectName"
+          placeholder="输入项目名称..."
+          icon="folder"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">
+          描述
+        </label>
+        <textarea
+          v-model="editProjectDesc"
+          placeholder="添加项目描述..."
+          rows="3"
+          class="w-full input-soft resize-none"
+        ></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-2">
+          截止日期
+        </label>
+        <input
+          v-model="editProjectDueDate"
+          type="date"
+          class="w-full input-soft"
+        />
+      </div>
+    </form>
+
+    <template #footer>
+      <div class="flex justify-end gap-3">
+        <AppButton variant="secondary" @click="showEditModal = false">取消</AppButton>
+        <AppButton
+          variant="primary"
+          :disabled="!editProjectName.trim()"
+          @click="updateProject"
+        >
+          保存修改
+        </AppButton>
+      </div>
+    </template>
+  </AppModal>
+
+  <!-- Task Detail Popup -->
+  <TaskDetailPopup
+    v-if="selectedTask"
+    :task="selectedTask"
+    :visible="showTaskDetail"
+    :position="taskPosition"
+    @close="closeTaskDetail"
+  />
 </template>
 
 <style scoped>

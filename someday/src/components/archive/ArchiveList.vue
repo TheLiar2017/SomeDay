@@ -28,8 +28,12 @@ const sortedArchivedTasks = computed(() => {
 
 function getProjectName(projectId: string | undefined): string | null {
   if (!projectId) return null
+  // First check active projects
   const project = projectStore.getProjectById(projectId)
-  return project?.name || null
+  if (project) return project.name
+  // Then check archived projects
+  const archivedProject = archiveStore.archivedProjects.find(p => p.id === projectId)
+  return archivedProject?.name || null
 }
 </script>
 

@@ -9,6 +9,7 @@ export interface Project {
   coverImage?: string
   tags: string[]
   taskIds: string[]
+  dueDate?: string
   createdAt: string
   updatedAt: string
   completedAt?: string
@@ -20,6 +21,7 @@ export interface ProjectCreateInput {
   description?: string
   coverImage?: string
   tags?: string[]
+  dueDate?: string
 }
 
 export interface ProjectUpdateInput {
@@ -29,4 +31,5 @@ export interface ProjectUpdateInput {
   progress?: number
   coverImage?: string
   tags?: string[]
+  dueDate?: string
 }
