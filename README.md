@@ -70,17 +70,17 @@ npm run tauri build
 someDay/
 ├── src/                      # Vue 前端源代码
 │   ├── components/           # Vue 组件
-│   │   ├── common/          # 通用组件 (Button, Input, Modal)
-│   │   ├── layout/          # 布局组件 (Sidebar, Layout)
-│   │   ├── tasks/           # 任务相关组件
-│   │   ├── calendar/        # 日历组件
-│   │   ├── projects/       # 项目相关组件
-│   │   └── archive/         # 归档组件
-│   ├── views/               # 页面视图
-│   ├── stores/              # Pinia 状态管理
-│   ├── types/               # TypeScript 类型定义
+│   │   ├── common/          # AppButton, AppInput, AppModal, AppCheckbox
+│   │   ├── layout/          # AppSidebar, AppLayout
+│   │   ├── tasks/           # TaskCard, TaskList, TaskItem, TaskCreateModal, TaskDetailPopup
+│   │   ├── calendar/        # MonthCalendar, WeekCalendar, DayColumn
+│   │   ├── projects/        # ProjectCard, ProjectList
+│   │   └── archive/         # ArchiveList
+│   ├── views/               # Dashboard, Calendar, Projects, Statistics, Archive, Settings
+│   ├── stores/              # Pinia: taskStore, projectStore, archiveStore, settingsStore, uiStore
+│   ├── types/               # TypeScript: task.ts, project.ts, settings.ts
 │   ├── router/              # Vue Router 配置
-│   └── styles/              # 全局样式
+│   └── styles/              # Tailwind CSS v4 样式
 ├── src-tauri/               # Tauri/Rust 后端
 │   └── src/lib.rs           # Rust 命令定义
 ├── stitch_todo_list/        # UI 原型与设计规范
@@ -109,13 +109,18 @@ someDay/
 控制面板 → 日历 → 项目 → 统计 → 归档 → 设置
 ```
 
-## 数据说明
+底部显示用户头像、名称和职位信息。
 
-当前版本数据存储在内存中，关闭应用后数据将重置。
+## 数据存储
 
-如需持久化存储，可自行实现：
-- `src-tauri/src/lib.rs` 中的 Tauri 命令
-- 使用 `tauri-plugin-store` 或 `tauri-plugin-sql` 存储到本地文件/SQLite
+应用使用 SQLite 数据库存储所有任务和项目数据：
+
+- 数据库：`{local_app_data}/someday/someday.db`
+- 设置文件：`{local_app_data}/someday/settings.json`
+
+数据持久化由 Rust 后端通过 Tauri 命令管理。
+
+## 参考资源
 
 ## 参考资源
 

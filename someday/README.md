@@ -25,13 +25,13 @@ src/
 ├── components/       # Vue 组件
 │   ├── common/      # AppButton, AppInput, AppModal, AppCheckbox
 │   ├── layout/      # AppSidebar, AppLayout
-│   ├── tasks/       # TaskCard, TaskList, TaskItem, TaskCreateModal
+│   ├── tasks/       # TaskCard, TaskList, TaskItem, TaskCreateModal, TaskDetailPopup
 │   ├── calendar/    # MonthCalendar, WeekCalendar, DayColumn
 │   ├── projects/    # ProjectCard, ProjectList
 │   └── archive/     # ArchiveList
-├── views/           # 页面组件 (Dashboard, Calendar, Projects, Archive, Settings)
-├── stores/          # Pinia stores
-├── types/           # TypeScript 类型
+├── views/           # Dashboard, Calendar, Projects, Statistics, Archive, Settings
+├── stores/          # Pinia stores (task, project, archive, settings, ui)
+├── types/           # TypeScript 类型 (task, project, settings)
 ├── router/          # Vue Router
 └── styles/          # Tailwind CSS v4 样式
 ```
